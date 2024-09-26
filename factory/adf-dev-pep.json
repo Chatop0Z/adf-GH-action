@@ -1,0 +1,9 @@
+{
+	"name": "adf-dev-pep",
+	"location": "southeastasia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "002ed1d6-6bcf-488d-92ad-51ed0d0526ce",
+		"tenantId": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"name": "mpep-sta",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep",
+		"groupId": "dfs",
+		"fqdns": [
+			"stadevpep.dfs.core.windows.net"
+		]
+	}
+}
