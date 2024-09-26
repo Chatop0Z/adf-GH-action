@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-dev-pep"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://stadevpep.dfs.core.windows.net"
+		},
+		"KeyVault_properties_typeProperties_baseUrl": {
+			"value": "https://kv-dev-pb.vault.azure.net/"
+		},
+		"mpep-sta_properties_privateLinkResourceId": {
+			"value": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep"
+		},
+		"mpep-sta_properties_groupId": {
+			"value": "dfs"
+		},
+		"mpep-sta_properties_fqdns": {
+			"value": [
+				"stadevpep.dfs.core.windows.net"
+			]
+		},
+		"default_properties_Environment_value": {
+			"value": "dev_"
+		}
+	}
+}
