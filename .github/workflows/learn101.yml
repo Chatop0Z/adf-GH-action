@@ -40,3 +40,26 @@ jobs:
           path: |
             adf-dev-pep/ARMTemplateParametersForFactory.json
             adf-dev-pep/ARMTemplateForFactory.json
+
+  download-and-use-artifacts:
+    runs-on: ubuntu-latest
+    needs: [upload-artifact-main, upload-artifact-adf]
+    steps:
+      - name: Download Files from Main Branch Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: main-branch-artifact
+          path: ./artifacts/main
+
+      - name: Download Files from ADF Publish Branch Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: adf-publish-branch-artifact
+          path: ./artifacts/adf
+
+      - name: List Downloaded Files
+        run: |
+          echo "Files from main branch:"
+          ls -la ./artifacts/main
+          echo "Files from adf_publish branch:"
+          ls -la ./artifacts/adf
