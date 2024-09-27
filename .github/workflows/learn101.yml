@@ -1,4 +1,4 @@
-name: List All Files in Main and ADF Publish Branches
+name: List Specific Files in Main and ADF Publish Branches
 
 on:
   push:
@@ -16,17 +16,31 @@ jobs:
         with:
           ref: main
 
-      - name: List All Files in Main Branch
+      - name: Set File Path for Main Branch
+        run: echo "STOPPER_PS1=TriggerStopper.ps1" >> $GITHUB_ENV
+
+      - name: List Specific File in Main Branch
         run: |
-          echo "Files in main branch:"
-          ls -R
+          echo "Contents of $FILE_PATH_MAIN in main branch:"
+          cat $FILE_PATH_MAIN || echo "$FILE_PATH_MAIN not found."
+
+      - name: Set File Path for ADF Publish Branch
+        run: echo "ARM_ADF_PARAM=adf-dev-pep/ARMTemplateParametersForFactory.json" >> $GITHUB_ENV
+
+      - name: List Specific File in ADF Publish Branch
+        run: |
+          echo "Contents of $ARM_ADF_PARAM in adf_publish branch:"
+          cat $ARM_ADF_PARAM || echo "$ARM_ADF_PARAM not found."
 
       - name: Checkout ADF Publish Branch
         uses: actions/checkout@v2
         with:
           ref: adf_publish
 
-      - name: List All Files in ADF Publish Branch
+      - name: Set File Path for ADF Publish Branch
+        run: echo "ARM_ADF=adf-dev-pep/ARMTemplateForFactory.json" >> $GITHUB_ENV
+
+      - name: List Specific File in ADF Publish Branch
         run: |
-          echo "Files in adf_publish branch:"
-          ls -R
+          echo "Contents of $ARM_ADF in adf_publish branch:"
+          cat $ARM_ADF || echo "$ARM_ADF not found."
