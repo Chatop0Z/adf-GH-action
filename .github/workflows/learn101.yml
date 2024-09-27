@@ -30,6 +30,9 @@ jobs:
         with:
           ref: adf_publish
 
+      - name: Print
+        run: ls
+
       - name: Upload Files from ADF Publish Branch
         uses: actions/upload-artifact@v3
         with:
