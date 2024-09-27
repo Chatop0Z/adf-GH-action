@@ -17,5 +17,5 @@ jobs:
       - name: Run Super-Linter
         uses: github/super-linter@v4
         env:
-          DEFAULT_BRANCH: main
+          DEFAULT_BRANCH: adf_publish
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
