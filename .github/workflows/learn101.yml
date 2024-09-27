@@ -49,17 +49,17 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: main-branch-artifact
-          path: ./artifacts/main-branch-artifact
+          path: ./artifacts/main
 
       - name: Download Files from ADF Publish Branch Artifact
         uses: actions/download-artifact@v3
         with:
           name: adf-publish-branch-artifact
-          path: ./artifacts/adf-publish-branch-artifact
+          path: ./artifacts/ARM
 
       - name: List Downloaded Files
         run: |
           echo "Files from main branch:"
           ls -la ./artifacts/main
           echo "Files from adf_publish branch:"
-          ls -la ./artifacts/adf
+          ls -la ./artifacts/ARM
