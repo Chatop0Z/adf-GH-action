@@ -9,7 +9,6 @@ on:
 jobs:
   upload-artifact-main:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout Main Branch
         uses: actions/checkout@v2
@@ -25,7 +24,6 @@ jobs:
 
   upload-artifact-adf:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/adf_publish'
     steps:
       - name: Checkout ADF Publish Branch
         uses: actions/checkout@v2
