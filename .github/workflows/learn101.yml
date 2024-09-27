@@ -1,4 +1,4 @@
-name: List Specific Files in Main and ADF Publish Branches
+name: Upload Files from Branches
 
 on:
   push:
@@ -7,31 +7,35 @@ on:
       - adf_publish
 
 jobs:
-  checkout-files:
+  upload-artifact-main:
     runs-on: ubuntu-latest
-
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout Main Branch
         uses: actions/checkout@v2
         with:
           ref: main
 
-      - name: Set Variables in Main Branch
-        run: | 
-          echo "STOPPER_PS=TriggerStopper.ps1" >> $GITHUB_ENV
-          echo "Contents of $FILE_PATH_MAIN in main branch:"
-          cat $FILE_PATH_MAIN || echo "$FILE_PATH_MAIN not found."
+      - name: Upload Files from Main Branch
+        uses: actions/upload-artifact@v3
+        with:
+          name: main-branch-artifact
+          path: |
+            TriggerRestarter.ps1
 
+  upload-artifact-adf:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/adf_publish'
+    steps:
       - name: Checkout ADF Publish Branch
         uses: actions/checkout@v2
         with:
           ref: adf_publish
 
-      - name: Set Variables in ADF Publish Branch
-        run: |
-          echo "ARM_ADF=adf-dev-pep/ARMTemplateForFactory.json" >> $GITHUB_ENV
-          echo "Contents of $ARM_ADF in adf_publish branch:"
-          cat $ARM_ADF || echo "$ARM_ADF not found."
-          echo "ARM_ADF_PARAM=adf-dev-pep/ARMTemplateParametersForFactory.json" >> $GITHUB_ENV
-          echo "Contents of $ARM_ADF_PARAM in adf_publish branch:"
-          cat $ARM_ADF_PARAM || echo "$ARM_ADF_PARAM not found."
+      - name: Upload Files from ADF Publish Branch
+        uses: actions/upload-artifact@v3
+        with:
+          name: adf-publish-branch-artifact
+          path: |
+            adf-pep/ARMTemplateParametersForFactory.json
+            adf-pep/ARMTemplateForFactory.json
