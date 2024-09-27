@@ -38,5 +38,5 @@ jobs:
         with:
           name: adf-publish-branch-artifact
           path: |
-            adf-pep/ARMTemplateParametersForFactory.json
-            adf-pep/ARMTemplateForFactory.json
+            adf-dev-pep/ARMTemplateParametersForFactory.json
+            adf-dev-pep/ARMTemplateForFactory.json
