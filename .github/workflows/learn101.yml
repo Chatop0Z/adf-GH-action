@@ -69,24 +69,20 @@ jobs:
       #     inlineScript: ./artifacts/main/TriggerRestarter.ps1 -armTemplate ./artifacts/ARM/ARMTemplateForFactory.json -ResourceGroupName $RESOURCEGROUPNAME -DataFactoryName $DATAFACTORYNAME -predeployment $true -deleteDeployment $false
       #     azPSVersion: "latest"
 
-      - name: Deploy ARM Template
-        uses: azure/arm-deploy@v2
+      - name: 'ARM Template deployment: Resource Group scope'
+        uses: azure/arm-deploy@v1
         with:
-          azure-resource-manager-connection: 'Visual Studio Enterprise Subscription – MPN (Chayut) (f6b0ae60-ffe3-4cec-b4e5-1e280653d722)'  # Use connection name if applicable
-          subscription-id: 'f6b0ae60-ffe3-4cec-b4e5-1e280653d722'
-          resource-group-name: 'adf-training'
-          location: 'Southeast Asia'
-          template: './artifacts/ARM/ARMTemplateForFactory.json'  # Adjust the path as necessary 
-          parameters: './artifacts/ARM/ARMTemplateParametersForFactory.json'  # Adjust the path as necessary
-          override-parameters: |
-            -factoryName "adf-dev-pep" 
-            -AzureDataLakeStorage1_properties_typeProperties_url "https://stadevpep.dfs.core.windows.net" 
-            -KeyVault_properties_typeProperties_baseUrl "https://kv-dev-pb.vault.azure.net/" 
-            -mpep-sta_properties_privateLinkResourceId "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep" 
-            -mpep-sta_properties_groupId "dfs" 
-            -mpep-sta_properties_fqdns ["stadevpep.dfs.core.windows.net"]
-            -default_properties_Environment_value "dev_" 
-          add-spn-to-environment: true  # This parameter is optional; adjust based on your needs
+          resourceGroupName: adf-training
+          template: ./azuredeploy.json
+          parameters: |
+            examples/template/parameters.json 
+            factoryName = adf-dev-pep2 
+            AzureDataLakeStorage1_properties_typeProperties_url = https://stadevpep.dfs.core.windows.net
+            KeyVault_properties_typeProperties_baseUrl = https://kv-dev-pb.vault.azure.net/
+            mpep-sta_properties_privateLinkResourceId = /subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep
+            mpep-sta_properties_groupId = dfs
+            mpep-sta_properties_fqdns = ["stadevpep.dfs.core.windows.net"]
+            default_properties_Environment_value = dev_
 
       # - name: Run Azure PowerShell inline script for START TRIGGER
       #   uses: azure/powershell@v2
