@@ -75,7 +75,7 @@ jobs:
           resourceGroupName: rg-GH-Action-CICD
           template: ./artifacts/ARM/ARMTemplateForFactory.json
           parameters: |
-            ./artifacts/ARM/ARMTemplateForFactory.json
+            ./artifacts/ARM/ARMTemplateParametersForFactory.json
             factoryName = adf-prod-pep 
             AzureDataLakeStorage1_properties_typeProperties_url = https://stadevpep.dfs.core.windows.net
             KeyVault_properties_typeProperties_baseUrl = https://kv-dev-pb.vault.azure.net/
