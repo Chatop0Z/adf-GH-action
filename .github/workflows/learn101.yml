@@ -74,9 +74,8 @@ jobs:
         with:
           resourceGroupName: rg-GH-Action-CICD
           template: ./artifacts/ARM/ARMTemplateForFactory.json
-          parameters: ./artifacts/ARM/ARMTemplateParametersForFactory.json
-            factoryName = adf-prod-pep 
-            AzureDataLakeStorage1_properties_typeProperties_url = https://stadevpep.dfs.core.windows.net
+          parameters: ./artifacts/ARM/ARMTemplateParametersForFactory.json factoryName=adf-prod-pep 
+            AzureDataLakeStorage1_properties_typeProperties_url="https://stadevpep.dfs.core.windows.net"
             KeyVault_properties_typeProperties_baseUrl = https://kv-dev-pb.vault.azure.net/
             mpep-sta_properties_privateLinkResourceId = /subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep
             mpep-sta_properties_groupId = dfs
