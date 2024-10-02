@@ -72,11 +72,11 @@ jobs:
       - name: 'ARM Template deployment: Resource Group scope'
         uses: azure/arm-deploy@v1
         with:
-          resourceGroupName: adf-training
+          resourceGroupName: rg-GH-Action-CICD
           template: ./azuredeploy.json
           parameters: |
             examples/template/parameters.json 
-            factoryName = adf-dev-pep2 
+            factoryName = adf-prod-pep 
             AzureDataLakeStorage1_properties_typeProperties_url = https://stadevpep.dfs.core.windows.net
             KeyVault_properties_typeProperties_baseUrl = https://kv-dev-pb.vault.azure.net/
             mpep-sta_properties_privateLinkResourceId = /subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep
