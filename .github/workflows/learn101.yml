@@ -73,9 +73,9 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: rg-GH-Action-CICD
-          template: ./azuredeploy.json
+          template: ./artifacts/ARM/ARMTemplateForFactory.json
           parameters: |
-            examples/template/parameters.json 
+            ./artifacts/ARM/ARMTemplateForFactory.json
             factoryName = adf-prod-pep 
             AzureDataLakeStorage1_properties_typeProperties_url = https://stadevpep.dfs.core.windows.net
             KeyVault_properties_typeProperties_baseUrl = https://kv-dev-pb.vault.azure.net/
