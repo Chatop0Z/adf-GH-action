@@ -1,0 +1,17 @@
+{
+	"name": "sql_cv_sck",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "KeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sc-sql-test"
+			}
+		}
+	}
+}
