@@ -3,7 +3,6 @@ name: Upload Files from Branches
 on:
   push:
     branches:
-      - main
       - adf_publish
 
 jobs:
@@ -62,12 +61,18 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true 
-          
+      
       # - name: Run Azure PowerShell inline script for STOP TRIGGER
       #   uses: azure/powershell@v2
       #   with:
       #     inlineScript: ./artifacts/main/TriggerRestarter.ps1 -armTemplate ./artifacts/ARM/ARMTemplateForFactory.json -ResourceGroupName $RESOURCEGROUPNAME -DataFactoryName $DATAFACTORYNAME -predeployment $true -deleteDeployment $false
       #     azPSVersion: "latest"
+
+      - uses: Azure/get-keyvault-secrets@v1
+        with: 
+          keyvault: 'kv-dev-pb'
+          secrets: 'prod-sta-key, sc-sql-test'
+        id: GetSecrets
 
       - name: 'ARM Template deployment: Resource Group scope'
         uses: azure/arm-deploy@v1
@@ -75,13 +80,16 @@ jobs:
           resourceGroupName: rg-GH-Action-CICD
           template: ./artifacts/ARM/ARMTemplateForFactory.json
           parameters: ./artifacts/ARM/ARMTemplateParametersForFactory.json 
-            factoryName=adf-prod-pep 
-            AzureDataLakeStorage1_properties_typeProperties_url=https://stadevpep.dfs.core.windows.net
+            factoryName=adf-prod-pep
+            sta_accountKey=${{ steps.GetSecrets.outputs.prod-sta-key }}
             KeyVault_properties_typeProperties_baseUrl=https://kv-dev-pb.vault.azure.net/
-            mpep-sta_properties_privateLinkResourceId=/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep
+            sta_properties_typeProperties_url=https://staprodpep.dfs.core.windows.net/
+            mpep-sta_properties_privateLinkResourceId=/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/staprodpep
             mpep-sta_properties_groupId=dfs
-            mpep-sta_properties_fqdns="[\"stadevpep.dfs.core.windows.net\"]"
-            default_properties_Environment_value=dev_
+            mpep-sta_properties_fqdns=staprodpep.dfs.core.windows.net
+            default_properties_Environment_value= 
+        # sql_cv_sck_properties_typeProperties_connectionString_secretName=sc-sql-test
+            
 
 
       # - name: Run Azure PowerShell inline script for START TRIGGER
