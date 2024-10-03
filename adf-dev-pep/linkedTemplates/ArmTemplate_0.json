@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-dev-pep"
 		},
-		"sql_db_default_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'sql_db_default'"
-		},
 		"sta_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'sta'"
@@ -23,17 +19,9 @@
 			"type": "string",
 			"defaultValue": "https://kv-dev-pb.vault.azure.net/"
 		},
-		"sql_db_default_properties_typeProperties_server": {
+		"sql_cv_sck_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
-			"defaultValue": "pep-sql-test.database.windows.net"
-		},
-		"sql_db_default_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "test01"
-		},
-		"sql_db_default_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "superadmin"
+			"defaultValue": "sc-sql-test"
 		},
 		"mpep-sta_properties_privateLinkResourceId": {
 			"type": "string",
@@ -49,17 +37,9 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
-		"sql_cv_sck_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "sc-sql-test"
-		},
 		"sta_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://stadevpep.dfs.core.windows.net/"
-		},
-		"sta_sck_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://stadevpep.dfs.core.windows.net"
 		}
 	},
 	"variables": {
@@ -99,26 +79,26 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/sql_db_default')]",
+			"name": "[concat(parameters('factoryName'), '/sql_cv_sck')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
-					"server": "[parameters('sql_db_default_properties_typeProperties_server')]",
-					"database": "[parameters('sql_db_default_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": true,
-					"authenticationType": "SQL",
-					"userName": "[parameters('sql_db_default_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('sql_db_default_password')]"
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "KeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('sql_cv_sck_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pep-air')]",
@@ -170,28 +150,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/sql_cv_sck')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "KeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('sql_cv_sck_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/sta')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -212,34 +170,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/pep-air')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/sta_sck')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('sta_sck_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "KeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "dev-sta-key"
-					}
-				},
-				"connectVia": {
-					"referenceName": "pep-air",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/pep-air')]",
-				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
 			]
 		}
 	]
