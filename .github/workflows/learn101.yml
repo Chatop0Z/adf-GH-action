@@ -68,10 +68,10 @@ jobs:
         with:
           inlineScript: ./artifacts/main/TriggerRestarter.ps1 
             -armTemplate ./artifacts/ARM/ARMTemplateForFactory.json 
-            ResourceGroupName rg-GH-Action-CICD
+            -ResourceGroupName rg-GH-Action-CICD
             -DataFactoryName adf-prod-pep 
-            predeployment $true 
-            deleteDeployment $false
+            -predeployment $true 
+            -deleteDeployment $false
           azPSVersion: "latest"
 
       - uses: Azure/get-keyvault-secrets@v1
