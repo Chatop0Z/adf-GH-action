@@ -7,9 +7,9 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-dev-pep"
 		},
-		"AzureDataLakeStorage1_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://stadevpep.dfs.core.windows.net"
+		"sta_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'sta'"
 		},
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
@@ -28,6 +28,14 @@
 			"defaultValue": [
 				"stadevpep.dfs.core.windows.net"
 			]
+		},
+		"sta_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stadevpep.dfs.core.windows.net/"
+		},
+		"sta_sck_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stadevpep.dfs.core.windows.net"
 		},
 		"default_properties_Environment_value": {
 			"type": "string",
@@ -60,6 +68,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"sta_accountKey": {
+						"value": "[parameters('sta_accountKey')]"
+					},
 					"default_properties_Environment_value": {
 						"value": "[parameters('default_properties_Environment_value')]"
 					},
@@ -75,8 +86,11 @@
 					"mpep-sta_properties_fqdns": {
 						"value": "[parameters('mpep-sta_properties_fqdns')]"
 					},
-					"AzureDataLakeStorage1_properties_typeProperties_url": {
-						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+					"sta_properties_typeProperties_url": {
+						"value": "[parameters('sta_properties_typeProperties_url')]"
+					},
+					"sta_sck_properties_typeProperties_url": {
+						"value": "[parameters('sta_sck_properties_typeProperties_url')]"
 					}
 				}
 			},

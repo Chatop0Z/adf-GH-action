@@ -7,9 +7,9 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-dev-pep"
 		},
-		"AzureDataLakeStorage1_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://stadevpep.dfs.core.windows.net"
+		"sta_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'sta'"
 		},
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
@@ -29,6 +29,14 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
+		"sta_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stadevpep.dfs.core.windows.net/"
+		},
+		"sta_sck_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stadevpep.dfs.core.windows.net"
+		},
 		"default_properties_Environment_value": {
 			"type": "string",
 			"defaultValue": "dev_"
@@ -38,34 +46,6 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "KeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "sta-key"
-					}
-				},
-				"connectVia": {
-					"referenceName": "pep-air",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/pep-air')]",
-				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
-			]
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/KeyVault')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -133,6 +113,57 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sta')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('sta_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('sta_accountKey')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "pep-air",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/pep-air')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sta_sck')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('sta_sck_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "KeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "dev-sta-key"
+					}
+				},
+				"connectVia": {
+					"referenceName": "pep-air",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/pep-air')]",
+				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
 			]
 		},
 		{
