@@ -86,7 +86,7 @@ jobs:
           resourceGroupName: rg-GH-Action-CICD
           template: ./artifacts/ARM/ARMTemplateForFactory.json
           parameters: ./artifacts/ARM/ARMTemplateParametersForFactory.json 
-            -factoryName=adf-prod-pep
+            factoryName=adf-prod-pep
             sta_accountKey=${{ steps.GetSecrets.outputs.prod-sta-key }}
             KeyVault_properties_typeProperties_baseUrl=https://kv-dev-pb.vault.azure.net/
             sta_properties_typeProperties_url=https://staprodpep.dfs.core.windows.net/
