@@ -87,7 +87,7 @@ jobs:
             sta_properties_typeProperties_url=https://staprodpep.dfs.core.windows.net/
             mpep-sta_properties_privateLinkResourceId=/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/staprodpep
             mpep-sta_properties_groupId=dfs
-            mpep-sta_properties_fqdns="[\"stadevpep.dfs.core.windows.net\"]"
+            mpep-sta_properties_fqdns="[\"staprodpep.dfs.core.windows.net\"]"
             default_properties_Environment_value= 
         # sql_cv_sck_properties_typeProperties_connectionString_secretName=sc-sql-test
             
