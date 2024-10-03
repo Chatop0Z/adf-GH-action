@@ -1,10 +1,8 @@
 name: Upload Files from Branches
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - adf_publish
-  pull_request:
     branches:
       - adf_publish
 
