@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - adf_publish
-  workflow_dispatch:
 
 jobs:
   upload-artifact-main:
