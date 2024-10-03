@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - adf_publish
-    paths:
-      - 'adf-dev-pep/ARMTemplateForFactory.json'
-      - 'adf-dev-pep/ARMTemplateParametersForFactory.json'
+  pull_request:
+    branches:
+      - adf_publish
 
 jobs:
   upload-artifact-main:
