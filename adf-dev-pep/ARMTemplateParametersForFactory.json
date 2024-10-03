@@ -8,8 +8,17 @@
 		"sta_accountKey": {
 			"value": ""
 		},
+		"sql_db_default_password": {
+			"value": ""
+		},
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://kv-dev-pb.vault.azure.net/"
+		},
+		"sta_properties_typeProperties_url": {
+			"value": "https://stadevpep.dfs.core.windows.net/"
+		},
+		"sta_sck_properties_typeProperties_url": {
+			"value": "https://stadevpep.dfs.core.windows.net"
 		},
 		"mpep-sta_properties_privateLinkResourceId": {
 			"value": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep"
@@ -22,11 +31,17 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
-		"sta_properties_typeProperties_url": {
-			"value": "https://stadevpep.dfs.core.windows.net/"
+		"sql_db_default_properties_typeProperties_server": {
+			"value": "pep-sql-test.database.windows.net"
 		},
-		"sta_sck_properties_typeProperties_url": {
-			"value": "https://stadevpep.dfs.core.windows.net"
+		"sql_db_default_properties_typeProperties_database": {
+			"value": "test01"
+		},
+		"sql_db_default_properties_typeProperties_userName": {
+			"value": "superadmin"
+		},
+		"sql_cv_sck_properties_typeProperties_connectionString_secretName": {
+			"value": "sc-sql-test"
 		},
 		"default_properties_Environment_value": {
 			"value": "dev_"
