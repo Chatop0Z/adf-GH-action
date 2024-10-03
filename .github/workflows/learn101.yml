@@ -63,11 +63,16 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true 
       
-      # - name: Run Azure PowerShell inline script for STOP TRIGGER
-      #   uses: azure/powershell@v2
-      #   with:
-      #     inlineScript: ./artifacts/main/TriggerRestarter.ps1 -armTemplate ./artifacts/ARM/ARMTemplateForFactory.json -ResourceGroupName $RESOURCEGROUPNAME -DataFactoryName $DATAFACTORYNAME -predeployment $true -deleteDeployment $false
-      #     azPSVersion: "latest"
+      - name: Run Azure PowerShell inline script for STOP TRIGGER
+        uses: azure/powershell@v2
+        with:
+          inlineScript: ./artifacts/main/TriggerRestarter.ps1 
+            -armTemplate ./artifacts/ARM/ARMTemplateForFactory.json 
+            ResourceGroupName rg-GH-Action-CICD
+            -DataFactoryName adf-prod-pep 
+            predeployment $true 
+            deleteDeployment $false
+          azPSVersion: "latest"
 
       - uses: Azure/get-keyvault-secrets@v1
         with: 
@@ -81,7 +86,7 @@ jobs:
           resourceGroupName: rg-GH-Action-CICD
           template: ./artifacts/ARM/ARMTemplateForFactory.json
           parameters: ./artifacts/ARM/ARMTemplateParametersForFactory.json 
-            factoryName=adf-prod-pep
+            -factoryName=adf-prod-pep
             sta_accountKey=${{ steps.GetSecrets.outputs.prod-sta-key }}
             KeyVault_properties_typeProperties_baseUrl=https://kv-dev-pb.vault.azure.net/
             sta_properties_typeProperties_url=https://staprodpep.dfs.core.windows.net/
