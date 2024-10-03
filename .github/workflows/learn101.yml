@@ -1,10 +1,10 @@
 name: Upload Files from Branches
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - adf_publish
+  workflow_dispatch:
 
 jobs:
   upload-artifact-main:
@@ -68,13 +68,14 @@ jobs:
         with:
           inlineScript: ./artifacts/main/TriggerRestarter.ps1 
             -armTemplate ./artifacts/ARM/ARMTemplateForFactory.json 
-            -ResourceGroupName rg-GH-Action-CICD
-            -DataFactoryName adf-prod-pep 
+            -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
+            -DataFactoryName ${{ vars.DATAFACTORYNAME_PROD }}
             -predeployment $true 
             -deleteDeployment $false
           azPSVersion: "latest"
 
-      - uses: Azure/get-keyvault-secrets@v1
+      - name: Gathering keys from Azure key vault
+        uses: Azure/get-keyvault-secrets@v1
         with: 
           keyvault: 'kv-dev-pb'
           secrets: 'prod-sta-key, sc-sql-test'
@@ -83,10 +84,10 @@ jobs:
       - name: 'ARM Template deployment: Resource Group scope'
         uses: azure/arm-deploy@v1
         with:
-          resourceGroupName: rg-GH-Action-CICD
+          resourceGroupName: ${{ vars.RESOURCEGROUPNAME }}
           template: ./artifacts/ARM/ARMTemplateForFactory.json
           parameters: ./artifacts/ARM/ARMTemplateParametersForFactory.json 
-            factoryName=adf-prod-pep
+            factoryName=${{ vars.DATAFACTORYNAME_PROD }}
             sta_accountKey=${{ steps.GetSecrets.outputs.prod-sta-key }}
             KeyVault_properties_typeProperties_baseUrl=https://kv-dev-pb.vault.azure.net/
             sql_cv_sck_properties_typeProperties_connectionString_secretName=sc-sql-test
@@ -94,10 +95,8 @@ jobs:
             mpep-sta_properties_privateLinkResourceId=/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/staprodpep
             mpep-sta_properties_groupId=dfs
             mpep-sta_properties_fqdns="[\"staprodpep.dfs.core.windows.net\"]"
-            default_properties_Environment_value= 
+            default_properties_Environment_value=" "
             sql_cv_sck_properties_typeProperties_connectionString_secretName=sc-sql-test
-            
-
 
       - name: Run Azure PowerShell inline script for START TRIGGER
         uses: azure/powershell@v2
