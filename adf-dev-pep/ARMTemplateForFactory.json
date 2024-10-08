@@ -15,9 +15,17 @@
 			"type": "string",
 			"defaultValue": "https://kv-dev-pb.vault.azure.net/"
 		},
-		"sql_cv_sck_properties_typeProperties_connectionString_secretName": {
+		"sql_cv_sck_properties_typeProperties_server": {
 			"type": "string",
-			"defaultValue": "sc-sql-test"
+			"defaultValue": "pep-sql-test.database.windows.net"
+		},
+		"sql_cv_sck_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "test01"
+		},
+		"sql_cv_sck_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "superadmin"
 		},
 		"sta_properties_typeProperties_url": {
 			"type": "string",
@@ -90,13 +98,19 @@
 				"annotations": [],
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
-					"connectionString": {
+					"server": "[parameters('sql_cv_sck_properties_typeProperties_server')]",
+					"database": "[parameters('sql_cv_sck_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('sql_cv_sck_properties_typeProperties_userName')]",
+					"password": {
 						"type": "AzureKeyVaultSecret",
 						"store": {
 							"referenceName": "KeyVault",
 							"type": "LinkedServiceReference"
 						},
-						"secretName": "[parameters('sql_cv_sck_properties_typeProperties_connectionString_secretName')]"
+						"secretName": "sc-sql-test"
 					}
 				}
 			},

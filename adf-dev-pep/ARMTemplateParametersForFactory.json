@@ -11,8 +11,14 @@
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://kv-dev-pb.vault.azure.net/"
 		},
-		"sql_cv_sck_properties_typeProperties_connectionString_secretName": {
-			"value": "sc-sql-test"
+		"sql_cv_sck_properties_typeProperties_server": {
+			"value": "pep-sql-test.database.windows.net"
+		},
+		"sql_cv_sck_properties_typeProperties_database": {
+			"value": "test01"
+		},
+		"sql_cv_sck_properties_typeProperties_userName": {
+			"value": "superadmin"
 		},
 		"sta_properties_typeProperties_url": {
 			"value": "https://stadevpep.dfs.core.windows.net/"
