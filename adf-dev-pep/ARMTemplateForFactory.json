@@ -45,7 +45,7 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
-		"default_properties_Environment_value": {
+		"default_properties_ENV_value": {
 			"type": "string",
 			"defaultValue": "DEV_"
 		}
@@ -237,9 +237,9 @@
 			"type": "Microsoft.DataFactory/factories/globalparameters",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"Environment": {
+				"ENV": {
 					"type": "string",
-					"value": "[parameters('default_properties_Environment_value')]"
+					"value": "[parameters('default_properties_ENV_value')]"
 				}
 			},
 			"dependsOn": []

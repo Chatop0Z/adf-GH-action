@@ -34,7 +34,7 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
-		"default_properties_Environment_value": {
+		"default_properties_ENV_value": {
 			"value": "DEV_"
 		}
 	}

@@ -45,7 +45,7 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
-		"default_properties_Environment_value": {
+		"default_properties_ENV_value": {
 			"type": "string",
 			"defaultValue": "DEV_"
 		},
@@ -79,8 +79,8 @@
 					"sta_accountKey": {
 						"value": "[parameters('sta_accountKey')]"
 					},
-					"default_properties_Environment_value": {
-						"value": "[parameters('default_properties_Environment_value')]"
+					"default_properties_ENV_value": {
+						"value": "[parameters('default_properties_ENV_value')]"
 					},
 					"KeyVault_properties_typeProperties_baseUrl": {
 						"value": "[parameters('KeyVault_properties_typeProperties_baseUrl')]"

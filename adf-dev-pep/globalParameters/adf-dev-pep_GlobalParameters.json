@@ -1,5 +1,5 @@
 {
-	"Environment": {
+	"ENV": {
 		"type": "string",
 		"value": "DEV_"
 	}
