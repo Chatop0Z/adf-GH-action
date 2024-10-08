@@ -35,7 +35,7 @@
 			]
 		},
 		"default_properties_Environment_value": {
-			"value": "dev_"
+			"value": "DEV_"
 		}
 	}
 }
