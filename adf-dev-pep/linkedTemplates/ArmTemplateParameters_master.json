@@ -15,7 +15,7 @@
 			"value": "pep-sql-test.database.windows.net"
 		},
 		"sql_cv_sck_properties_typeProperties_database": {
-			"value": "test01"
+			"value": "@{trim(concat(linkedService().ENV,'test01'))}"
 		},
 		"sql_cv_sck_properties_typeProperties_userName": {
 			"value": "superadmin"

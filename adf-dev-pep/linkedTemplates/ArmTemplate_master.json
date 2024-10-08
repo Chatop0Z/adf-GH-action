@@ -21,7 +21,7 @@
 		},
 		"sql_cv_sck_properties_typeProperties_database": {
 			"type": "string",
-			"defaultValue": "test01"
+			"defaultValue": "@{trim(concat(linkedService().ENV,'test01'))}"
 		},
 		"sql_cv_sck_properties_typeProperties_userName": {
 			"type": "string",
