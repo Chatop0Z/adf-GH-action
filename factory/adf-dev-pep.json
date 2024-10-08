@@ -2,7 +2,7 @@
 	"name": "adf-dev-pep",
 	"properties": {
 		"globalParameters": {
-			"Environment": {
+			"ENV": {
 				"type": "string",
 				"value": "DEV_"
 			}
