@@ -42,8 +42,11 @@ jobs:
             adf-dev-pep/ARMTemplateForFactory.json
 
   ARM-Template-Deployment:
+    name: Deploying ARM-Template
     runs-on: ubuntu-latest
     needs: [upload-artifact-main, upload-artifact-adf]
+    environment:
+      name: TestingEnvForDeployment
     steps:
       - name: Download Files from Main Branch Artifact
         uses: actions/download-artifact@v3
