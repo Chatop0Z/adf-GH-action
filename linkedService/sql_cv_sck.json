@@ -1,11 +1,16 @@
 {
 	"name": "sql_cv_sck",
 	"properties": {
+		"parameters": {
+			"ENV": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlDatabase",
 		"typeProperties": {
 			"server": "pep-sql-test.database.windows.net",
-			"database": "test01",
+			"database": "@{trim(concat(linkedService().ENV,'test01'))}",
 			"encrypt": "mandatory",
 			"trustServerCertificate": true,
 			"authenticationType": "SQL",
