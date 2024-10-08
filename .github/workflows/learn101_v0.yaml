@@ -97,7 +97,7 @@ jobs:
             mpep-sta_properties_privateLinkResourceId=/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/staprodpep
             mpep-sta_properties_groupId=dfs
             mpep-sta_properties_fqdns="[\"staprodpep.dfs.core.windows.net\"]"
-            default_properties_Environment_value=" "
+            default_properties_ENV_value=" "
 
       - name: Run Azure PowerShell inline script for START TRIGGER
         uses: azure/powershell@v2
