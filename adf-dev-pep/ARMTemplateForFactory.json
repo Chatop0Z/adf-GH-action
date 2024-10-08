@@ -45,6 +45,10 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
+		"shared-shir_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourcegroups/rg-GH-Action-CICD/providers/Microsoft.DataFactory/factories/adf-shir-pep/integrationruntimes/shir-host"
+		},
 		"default_properties_ENV_value": {
 			"type": "string",
 			"defaultValue": "DEV_"
@@ -231,6 +235,21 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/shared-shir')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('shared-shir_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/default')]",

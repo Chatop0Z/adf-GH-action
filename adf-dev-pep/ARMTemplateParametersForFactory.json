@@ -34,6 +34,9 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
+		"shared-shir_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourcegroups/rg-GH-Action-CICD/providers/Microsoft.DataFactory/factories/adf-shir-pep/integrationruntimes/shir-host"
+		},
 		"default_properties_ENV_value": {
 			"value": "DEV_"
 		}

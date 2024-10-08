@@ -45,6 +45,10 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
+		"shared-shir_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourcegroups/rg-GH-Action-CICD/providers/Microsoft.DataFactory/factories/adf-shir-pep/integrationruntimes/shir-host"
+		},
 		"default_properties_ENV_value": {
 			"type": "string",
 			"defaultValue": "DEV_"
@@ -84,6 +88,9 @@
 					},
 					"KeyVault_properties_typeProperties_baseUrl": {
 						"value": "[parameters('KeyVault_properties_typeProperties_baseUrl')]"
+					},
+					"shared-shir_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('shared-shir_properties_typeProperties_linkedInfo_resourceId')]"
 					},
 					"sql_cv_sck_properties_typeProperties_server": {
 						"value": "[parameters('sql_cv_sck_properties_typeProperties_server')]"
