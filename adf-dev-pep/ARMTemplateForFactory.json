@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'sta'"
 		},
+		"vm_sql_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'vm_sql'"
+		},
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-dev-pb.vault.azure.net/"
@@ -31,6 +35,22 @@
 			"type": "string",
 			"defaultValue": "https://stadevpep.dfs.core.windows.net/"
 		},
+		"vm_sql_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "vm-shir\\SQLEXPRESS"
+		},
+		"vm_sql_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "AdventureWorksLT2022"
+		},
+		"vm_sql_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "superadmin"
+		},
+		"shared-shir_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourcegroups/rg-GH-Action-CICD/providers/Microsoft.DataFactory/factories/adf-shir-pep/integrationruntimes/shir-host"
+		},
 		"mpep-sta_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep"
@@ -44,10 +64,6 @@
 			"defaultValue": [
 				"stadevpep.dfs.core.windows.net"
 			]
-		},
-		"shared-shir_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourcegroups/rg-GH-Action-CICD/providers/Microsoft.DataFactory/factories/adf-shir-pep/integrationruntimes/shir-host"
 		},
 		"default_properties_ENV_value": {
 			"type": "string",
@@ -65,12 +81,121 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Test03",
-						"type": "Wait",
+						"name": "1",
+						"type": "Script",
 						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
 						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "vm_sql",
+							"type": "LinkedServiceReference"
+						},
 						"typeProperties": {
-							"waitTimeInSeconds": 1
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "select SQUARE(10) as Multiple"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "2",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "vm_sql",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "select dbo.addition(10, 10) as Addition"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "3",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "vm_sql",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "SELECT * FROM dbo.ufnGetAllCategories()"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "TEST",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "vm_sql",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "USE AdventureWorksLT2022\n\nSelect *\n\nFROM OPENQUERY([TESTLINKED], '\nSELECT dbo.division(10, 10) as DIV')"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
 						}
 					}
 				],
@@ -79,7 +204,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/vm_sql')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/KeyVault')]",
@@ -151,6 +278,34 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/vm_sql')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('vm_sql_properties_typeProperties_server')]",
+					"database": "[parameters('vm_sql_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('vm_sql_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('vm_sql_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "shared-shir",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/shared-shir')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/trigger_TEST_0310')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -217,6 +372,21 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/shared-shir')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('shared-shir_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/default')]",
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
 			"apiVersion": "2018-06-01",
@@ -235,21 +405,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/shared-shir')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {
-					"linkedInfo": {
-						"resourceId": "[parameters('shared-shir_properties_typeProperties_linkedInfo_resourceId')]",
-						"authorizationType": "Rbac"
-					}
-				}
-			},
-			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/default')]",

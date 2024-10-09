@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'sta'"
 		},
+		"vm_sql_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'vm_sql'"
+		},
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-dev-pb.vault.azure.net/"
@@ -31,6 +35,22 @@
 			"type": "string",
 			"defaultValue": "https://stadevpep.dfs.core.windows.net/"
 		},
+		"vm_sql_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "vm-shir\\SQLEXPRESS"
+		},
+		"vm_sql_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "AdventureWorksLT2022"
+		},
+		"vm_sql_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "superadmin"
+		},
+		"shared-shir_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourcegroups/rg-GH-Action-CICD/providers/Microsoft.DataFactory/factories/adf-shir-pep/integrationruntimes/shir-host"
+		},
 		"mpep-sta_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep"
@@ -44,10 +64,6 @@
 			"defaultValue": [
 				"stadevpep.dfs.core.windows.net"
 			]
-		},
-		"shared-shir_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourcegroups/rg-GH-Action-CICD/providers/Microsoft.DataFactory/factories/adf-shir-pep/integrationruntimes/shir-host"
 		},
 		"default_properties_ENV_value": {
 			"type": "string",
@@ -80,6 +96,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"vm_sql_password": {
+						"value": "[parameters('vm_sql_password')]"
+					},
 					"sta_accountKey": {
 						"value": "[parameters('sta_accountKey')]"
 					},
@@ -100,6 +119,15 @@
 					},
 					"sql_cv_sck_properties_typeProperties_userName": {
 						"value": "[parameters('sql_cv_sck_properties_typeProperties_userName')]"
+					},
+					"vm_sql_properties_typeProperties_server": {
+						"value": "[parameters('vm_sql_properties_typeProperties_server')]"
+					},
+					"vm_sql_properties_typeProperties_database": {
+						"value": "[parameters('vm_sql_properties_typeProperties_database')]"
+					},
+					"vm_sql_properties_typeProperties_userName": {
+						"value": "[parameters('vm_sql_properties_typeProperties_userName')]"
 					},
 					"mpep-sta_properties_privateLinkResourceId": {
 						"value": "[parameters('mpep-sta_properties_privateLinkResourceId')]"

@@ -8,6 +8,9 @@
 		"sta_accountKey": {
 			"value": ""
 		},
+		"vm_sql_password": {
+			"value": ""
+		},
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://kv-dev-pb.vault.azure.net/"
 		},
@@ -23,6 +26,18 @@
 		"sta_properties_typeProperties_url": {
 			"value": "https://stadevpep.dfs.core.windows.net/"
 		},
+		"vm_sql_properties_typeProperties_server": {
+			"value": "vm-shir\\SQLEXPRESS"
+		},
+		"vm_sql_properties_typeProperties_database": {
+			"value": "AdventureWorksLT2022"
+		},
+		"vm_sql_properties_typeProperties_userName": {
+			"value": "superadmin"
+		},
+		"shared-shir_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourcegroups/rg-GH-Action-CICD/providers/Microsoft.DataFactory/factories/adf-shir-pep/integrationruntimes/shir-host"
+		},
 		"mpep-sta_properties_privateLinkResourceId": {
 			"value": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep"
 		},
@@ -33,9 +48,6 @@
 			"value": [
 				"stadevpep.dfs.core.windows.net"
 			]
-		},
-		"shared-shir_properties_typeProperties_linkedInfo_resourceId": {
-			"value": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourcegroups/rg-GH-Action-CICD/providers/Microsoft.DataFactory/factories/adf-shir-pep/integrationruntimes/shir-host"
 		},
 		"default_properties_ENV_value": {
 			"value": "DEV_"
