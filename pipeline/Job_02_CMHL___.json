@@ -1,0 +1,33 @@
+{
+	"name": "Job_02_CMHL___",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Data",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			},
+			{
+				"name": "Copy_2",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Copy Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
+		"annotations": []
+	}
+}
