@@ -1,11 +1,18 @@
 {
-	"name": "Job_02_CMHL___",
+	"name": "Job_02_CMHL_Test_CI_CD",
 	"properties": {
 		"activities": [
 			{
 				"name": "Copy Data",
 				"type": "Wait",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "05_11_Testing_Activity",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"waitTimeInSeconds": 1
@@ -22,6 +29,15 @@
 						]
 					}
 				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			},
+			{
+				"name": "05_11_Testing_Activity",
+				"type": "Wait",
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"waitTimeInSeconds": 1
