@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "1",
-				"type": "Script",
+				"name": "Copy data1",
+				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -14,144 +14,47 @@
 					"secureInput": false
 				},
 				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "vm_sql",
-					"type": "LinkedServiceReference"
-				},
 				"typeProperties": {
-					"scripts": [
-						{
-							"type": "Query",
-							"text": "select SQUARE(10) as Multiple"
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "Append",
+						"partitionOption": "None"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
 						}
-					],
-					"scriptBlockExecutionTimeout": "02:00:00"
-				}
-			},
-			{
-				"name": "2",
-				"type": "Script",
-				"dependsOn": [
+					}
+				},
+				"inputs": [
 					{
-						"activity": "1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "dbo",
+							"TableName": "Customer"
+						}
 					}
 				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "vm_sql",
-					"type": "LinkedServiceReference"
-				},
-				"typeProperties": {
-					"scripts": [
-						{
-							"type": "Query",
-							"text": "select dbo.addition(10, 10) as Addition"
-						}
-					],
-					"scriptBlockExecutionTimeout": "02:00:00"
-				}
-			},
-			{
-				"name": "3",
-				"type": "Script",
-				"dependsOn": [
+				"outputs": [
 					{
-						"activity": "2",
-						"dependencyConditions": [
-							"Succeeded"
-						]
+						"referenceName": "LakehouseTable1",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "dbo",
+							"TableName": "Customer"
+						}
 					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "vm_sql",
-					"type": "LinkedServiceReference"
-				},
-				"typeProperties": {
-					"scripts": [
-						{
-							"type": "Query",
-							"text": "SELECT * FROM dbo.ufnGetAllCategories()"
-						}
-					],
-					"scriptBlockExecutionTimeout": "02:00:00"
-				}
-			},
-			{
-				"name": "TEST",
-				"type": "Script",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "vm_sql",
-					"type": "LinkedServiceReference"
-				},
-				"typeProperties": {
-					"scripts": [
-						{
-							"type": "Query",
-							"text": "USE AdventureWorksLT2022\n\nSelect *\n\nFROM OPENQUERY([TESTLINKED], '\nSELECT dbo.division(10, 10) as DIV')"
-						}
-					],
-					"scriptBlockExecutionTimeout": "02:00:00"
-				}
-			},
-			{
-				"name": "4",
-				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "3",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "vm_sql",
-					"type": "LinkedServiceReference"
-				},
-				"typeProperties": {
-					"scripts": [
-						{
-							"type": "Query",
-							"text": "SELECT * FROM dbo.ufnGetAllCategories()"
-						}
-					],
-					"scriptBlockExecutionTimeout": "02:00:00"
-				}
+				]
 			}
 		],
 		"annotations": []
