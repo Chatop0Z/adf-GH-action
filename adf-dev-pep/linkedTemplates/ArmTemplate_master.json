@@ -15,6 +15,18 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'vm_sql'"
 		},
+		"Warehouse1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'Warehouse1'"
+		},
+		"Lakehouse1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'Lakehouse1'"
+		},
+		"DEMO_1DB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'DEMO_1DB'"
+		},
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-dev-pb.vault.azure.net/"
@@ -65,6 +77,38 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
+		"Warehouse1_properties_typeProperties_endpoint": {
+			"type": "string",
+			"defaultValue": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.datawarehouse.fabric.microsoft.com"
+		},
+		"Warehouse1_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
+		"Warehouse1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
+		"Lakehouse1_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
+		"Lakehouse1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
+		"DEMO_1DB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "pep-sql-test.database.windows.net"
+		},
+		"DEMO_1DB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "test01"
+		},
+		"DEMO_1DB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "superadmin"
+		},
 		"default_properties_ENV_value": {
 			"type": "string",
 			"defaultValue": "DEV_"
@@ -101,6 +145,15 @@
 					},
 					"sta_accountKey": {
 						"value": "[parameters('sta_accountKey')]"
+					},
+					"Warehouse1_servicePrincipalCredential": {
+						"value": "[parameters('Warehouse1_servicePrincipalCredential')]"
+					},
+					"Lakehouse1_servicePrincipalCredential": {
+						"value": "[parameters('Lakehouse1_servicePrincipalCredential')]"
+					},
+					"DEMO_1DB_password": {
+						"value": "[parameters('DEMO_1DB_password')]"
 					},
 					"default_properties_ENV_value": {
 						"value": "[parameters('default_properties_ENV_value')]"
@@ -140,6 +193,30 @@
 					},
 					"sta_properties_typeProperties_url": {
 						"value": "[parameters('sta_properties_typeProperties_url')]"
+					},
+					"Warehouse1_properties_typeProperties_endpoint": {
+						"value": "[parameters('Warehouse1_properties_typeProperties_endpoint')]"
+					},
+					"Warehouse1_properties_typeProperties_tenant": {
+						"value": "[parameters('Warehouse1_properties_typeProperties_tenant')]"
+					},
+					"Warehouse1_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('Warehouse1_properties_typeProperties_servicePrincipalId')]"
+					},
+					"Lakehouse1_properties_typeProperties_tenant": {
+						"value": "[parameters('Lakehouse1_properties_typeProperties_tenant')]"
+					},
+					"Lakehouse1_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('Lakehouse1_properties_typeProperties_servicePrincipalId')]"
+					},
+					"DEMO_1DB_properties_typeProperties_server": {
+						"value": "[parameters('DEMO_1DB_properties_typeProperties_server')]"
+					},
+					"DEMO_1DB_properties_typeProperties_database": {
+						"value": "[parameters('DEMO_1DB_properties_typeProperties_database')]"
+					},
+					"DEMO_1DB_properties_typeProperties_userName": {
+						"value": "[parameters('DEMO_1DB_properties_typeProperties_userName')]"
 					}
 				}
 			},

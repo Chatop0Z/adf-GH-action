@@ -11,6 +11,15 @@
 		"vm_sql_password": {
 			"value": ""
 		},
+		"Warehouse1_servicePrincipalCredential": {
+			"value": ""
+		},
+		"Lakehouse1_servicePrincipalCredential": {
+			"value": ""
+		},
+		"DEMO_1DB_password": {
+			"value": ""
+		},
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://kv-dev-pb.vault.azure.net/"
 		},
@@ -48,6 +57,30 @@
 			"value": [
 				"stadevpep.dfs.core.windows.net"
 			]
+		},
+		"Warehouse1_properties_typeProperties_endpoint": {
+			"value": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.datawarehouse.fabric.microsoft.com"
+		},
+		"Warehouse1_properties_typeProperties_tenant": {
+			"value": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
+		"Warehouse1_properties_typeProperties_servicePrincipalId": {
+			"value": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
+		"Lakehouse1_properties_typeProperties_tenant": {
+			"value": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
+		"Lakehouse1_properties_typeProperties_servicePrincipalId": {
+			"value": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
+		"DEMO_1DB_properties_typeProperties_server": {
+			"value": "pep-sql-test.database.windows.net"
+		},
+		"DEMO_1DB_properties_typeProperties_database": {
+			"value": "test01"
+		},
+		"DEMO_1DB_properties_typeProperties_userName": {
+			"value": "superadmin"
 		},
 		"default_properties_ENV_value": {
 			"value": "DEV_"
