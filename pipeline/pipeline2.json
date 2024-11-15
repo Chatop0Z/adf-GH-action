@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "Select top (0) * FROM dbo.Customer",
+						"sqlReaderQuery": "select top(1) * FROM dbo.customer",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -89,7 +89,7 @@
 							"type": "LinkedServiceReference"
 						},
 						"path": "staging",
-						"enableCompression": false
+						"enableCompression": true
 					}
 				},
 				"inputs": [
@@ -98,7 +98,10 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
-							"TableName": "Product"
+							"TableName": {
+								"value": "@pipeline().parameters.Table",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -108,7 +111,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "stg",
-							"TableName": "Customer"
+							"TableName": "Product"
 						}
 					}
 				]
@@ -170,6 +173,16 @@
 				]
 			}
 		],
+		"parameters": {
+			"Schema": {
+				"type": "string",
+				"defaultValue": "SalesLT"
+			},
+			"Table": {
+				"type": "string",
+				"defaultValue": "Product"
+			}
+		},
 		"annotations": []
 	}
 }
