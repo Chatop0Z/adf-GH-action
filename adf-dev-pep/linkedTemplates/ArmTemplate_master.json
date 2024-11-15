@@ -7,6 +7,18 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-dev-pep"
 		},
+		"DEMO_1DB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'DEMO_1DB'"
+		},
+		"Lakehouse1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'Lakehouse1'"
+		},
+		"Warehouse1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'Warehouse1'"
+		},
 		"sta_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'sta'"
@@ -15,21 +27,41 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'vm_sql'"
 		},
-		"Warehouse1_servicePrincipalCredential": {
-			"type": "secureString",
-			"metadata": "Secure string for 'servicePrincipalCredential' of 'Warehouse1'"
+		"DEMO_1DB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "pep-sql-test.database.windows.net"
 		},
-		"Lakehouse1_servicePrincipalCredential": {
-			"type": "secureString",
-			"metadata": "Secure string for 'servicePrincipalCredential' of 'Lakehouse1'"
+		"DEMO_1DB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "test01"
 		},
-		"DEMO_1DB_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'DEMO_1DB'"
+		"DEMO_1DB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "superadmin"
 		},
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-dev-pb.vault.azure.net/"
+		},
+		"Lakehouse1_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
+		"Lakehouse1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
+		"Warehouse1_properties_typeProperties_endpoint": {
+			"type": "string",
+			"defaultValue": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.datawarehouse.fabric.microsoft.com"
+		},
+		"Warehouse1_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
+		"Warehouse1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
 		},
 		"sql_cv_sck_properties_typeProperties_server": {
 			"type": "string",
@@ -77,38 +109,6 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
-		"Warehouse1_properties_typeProperties_endpoint": {
-			"type": "string",
-			"defaultValue": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.datawarehouse.fabric.microsoft.com"
-		},
-		"Warehouse1_properties_typeProperties_tenant": {
-			"type": "string",
-			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
-		},
-		"Warehouse1_properties_typeProperties_servicePrincipalId": {
-			"type": "string",
-			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
-		},
-		"Lakehouse1_properties_typeProperties_tenant": {
-			"type": "string",
-			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
-		},
-		"Lakehouse1_properties_typeProperties_servicePrincipalId": {
-			"type": "string",
-			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
-		},
-		"DEMO_1DB_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "pep-sql-test.database.windows.net"
-		},
-		"DEMO_1DB_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "test01"
-		},
-		"DEMO_1DB_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "superadmin"
-		},
 		"default_properties_ENV_value": {
 			"type": "string",
 			"defaultValue": "DEV_"
@@ -143,17 +143,17 @@
 					"vm_sql_password": {
 						"value": "[parameters('vm_sql_password')]"
 					},
-					"sta_accountKey": {
-						"value": "[parameters('sta_accountKey')]"
-					},
-					"Warehouse1_servicePrincipalCredential": {
-						"value": "[parameters('Warehouse1_servicePrincipalCredential')]"
+					"DEMO_1DB_password": {
+						"value": "[parameters('DEMO_1DB_password')]"
 					},
 					"Lakehouse1_servicePrincipalCredential": {
 						"value": "[parameters('Lakehouse1_servicePrincipalCredential')]"
 					},
-					"DEMO_1DB_password": {
-						"value": "[parameters('DEMO_1DB_password')]"
+					"Warehouse1_servicePrincipalCredential": {
+						"value": "[parameters('Warehouse1_servicePrincipalCredential')]"
+					},
+					"sta_accountKey": {
+						"value": "[parameters('sta_accountKey')]"
 					},
 					"default_properties_ENV_value": {
 						"value": "[parameters('default_properties_ENV_value')]"
@@ -191,8 +191,20 @@
 					"mpep-sta_properties_fqdns": {
 						"value": "[parameters('mpep-sta_properties_fqdns')]"
 					},
-					"sta_properties_typeProperties_url": {
-						"value": "[parameters('sta_properties_typeProperties_url')]"
+					"DEMO_1DB_properties_typeProperties_server": {
+						"value": "[parameters('DEMO_1DB_properties_typeProperties_server')]"
+					},
+					"DEMO_1DB_properties_typeProperties_database": {
+						"value": "[parameters('DEMO_1DB_properties_typeProperties_database')]"
+					},
+					"DEMO_1DB_properties_typeProperties_userName": {
+						"value": "[parameters('DEMO_1DB_properties_typeProperties_userName')]"
+					},
+					"Lakehouse1_properties_typeProperties_tenant": {
+						"value": "[parameters('Lakehouse1_properties_typeProperties_tenant')]"
+					},
+					"Lakehouse1_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('Lakehouse1_properties_typeProperties_servicePrincipalId')]"
 					},
 					"Warehouse1_properties_typeProperties_endpoint": {
 						"value": "[parameters('Warehouse1_properties_typeProperties_endpoint')]"
@@ -203,24 +215,32 @@
 					"Warehouse1_properties_typeProperties_servicePrincipalId": {
 						"value": "[parameters('Warehouse1_properties_typeProperties_servicePrincipalId')]"
 					},
-					"Lakehouse1_properties_typeProperties_tenant": {
-						"value": "[parameters('Lakehouse1_properties_typeProperties_tenant')]"
-					},
-					"Lakehouse1_properties_typeProperties_servicePrincipalId": {
-						"value": "[parameters('Lakehouse1_properties_typeProperties_servicePrincipalId')]"
-					},
-					"DEMO_1DB_properties_typeProperties_server": {
-						"value": "[parameters('DEMO_1DB_properties_typeProperties_server')]"
-					},
-					"DEMO_1DB_properties_typeProperties_database": {
-						"value": "[parameters('DEMO_1DB_properties_typeProperties_database')]"
-					},
-					"DEMO_1DB_properties_typeProperties_userName": {
-						"value": "[parameters('DEMO_1DB_properties_typeProperties_userName')]"
+					"sta_properties_typeProperties_url": {
+						"value": "[parameters('sta_properties_typeProperties_url')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "adf-dev-pep_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-dev-pep_ArmTemplate_0')]"
+			]
 		}
 	]
 }
