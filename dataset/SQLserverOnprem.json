@@ -1,0 +1,32 @@
+{
+	"name": "SQLserverOnprem",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "vm_sql",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SchemaName": {
+				"type": "string",
+				"defaultValue": "SalesLT"
+			},
+			"TableName": {
+				"type": "string",
+				"defaultValue": "Product"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().SchemaName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
+	}
+}
