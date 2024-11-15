@@ -1,0 +1,17 @@
+name: Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Test:
+    name: Test
+    runs-on: ubuntu-latest
+    environment:
+      name: TestingEnvForDeployment
+    steps:
+      - name: Print a Variable
+        run: |
+          MY_VAR="Hello, GitHub Actions!"
+          echo "The value of MY_VAR is: $MY_VAR"
+          echo "The value from secret and env is: ${{ vars.RESOURCEGROUPNAME }}"
