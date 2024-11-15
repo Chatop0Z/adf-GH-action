@@ -1,6 +1,5 @@
 {
 	"name": "DEMO_1DB",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureSqlDatabase",
@@ -11,11 +10,19 @@
 			"trustServerCertificate": true,
 			"authenticationType": "SQL",
 			"userName": "superadmin",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDUwNUQwQzVELTYxNkItNDUzRi1CNjFFLUE4RUE3Q0RDQkJBMl81ZTdmOTY1MS0xYmNhLTQ1ODgtOTQ3Mi0wODQwNjI0NWJiYTkiDQp9"
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "KeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sc-sql-test"
+			}
 		},
 		"connectVia": {
 			"referenceName": "pep-air",
 			"type": "IntegrationRuntimeReference"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
