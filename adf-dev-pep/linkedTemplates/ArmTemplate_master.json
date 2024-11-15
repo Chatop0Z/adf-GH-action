@@ -11,14 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'DEMO_1DB'"
 		},
-		"Lakehouse1_servicePrincipalCredential": {
-			"type": "secureString",
-			"metadata": "Secure string for 'servicePrincipalCredential' of 'Lakehouse1'"
-		},
-		"Warehouse1_servicePrincipalCredential": {
-			"type": "secureString",
-			"metadata": "Secure string for 'servicePrincipalCredential' of 'Warehouse1'"
-		},
 		"sta_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'sta'"
@@ -145,12 +137,6 @@
 					},
 					"DEMO_1DB_password": {
 						"value": "[parameters('DEMO_1DB_password')]"
-					},
-					"Lakehouse1_servicePrincipalCredential": {
-						"value": "[parameters('Lakehouse1_servicePrincipalCredential')]"
-					},
-					"Warehouse1_servicePrincipalCredential": {
-						"value": "[parameters('Warehouse1_servicePrincipalCredential')]"
 					},
 					"sta_accountKey": {
 						"value": "[parameters('sta_accountKey')]"

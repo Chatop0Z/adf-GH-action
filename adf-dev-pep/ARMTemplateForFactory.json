@@ -11,14 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'DEMO_1DB'"
 		},
-		"Lakehouse1_servicePrincipalCredential": {
-			"type": "secureString",
-			"metadata": "Secure string for 'servicePrincipalCredential' of 'Lakehouse1'"
-		},
-		"Warehouse1_servicePrincipalCredential": {
-			"type": "secureString",
-			"metadata": "Secure string for 'servicePrincipalCredential' of 'Warehouse1'"
-		},
 		"sta_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'sta'"
@@ -666,8 +658,12 @@
 					"servicePrincipalId": "[parameters('Lakehouse1_properties_typeProperties_servicePrincipalId')]",
 					"servicePrincipalCredentialType": "ServicePrincipalKey",
 					"servicePrincipalCredential": {
-						"type": "SecureString",
-						"value": "[parameters('Lakehouse1_servicePrincipalCredential')]"
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "KeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "fabric-service-principal-client-secret-value"
 					}
 				},
 				"connectVia": {
@@ -676,7 +672,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/pep-air')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/pep-air')]",
+				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
 			]
 		},
 		{
@@ -694,8 +691,12 @@
 					"servicePrincipalCredentialType": "ServicePrincipalKey",
 					"servicePrincipalId": "[parameters('Warehouse1_properties_typeProperties_servicePrincipalId')]",
 					"servicePrincipalCredential": {
-						"type": "SecureString",
-						"value": "[parameters('Warehouse1_servicePrincipalCredential')]"
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "KeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "fabric-service-principal-client-secret-value"
 					}
 				},
 				"connectVia": {
@@ -704,7 +705,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/pep-air')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/pep-air')]",
+				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
 			]
 		},
 		{

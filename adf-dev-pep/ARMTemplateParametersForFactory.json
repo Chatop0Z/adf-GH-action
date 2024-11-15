@@ -8,12 +8,6 @@
 		"DEMO_1DB_password": {
 			"value": ""
 		},
-		"Lakehouse1_servicePrincipalCredential": {
-			"value": ""
-		},
-		"Warehouse1_servicePrincipalCredential": {
-			"value": ""
-		},
 		"sta_accountKey": {
 			"value": ""
 		},
