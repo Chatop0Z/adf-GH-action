@@ -1,20 +1,17 @@
-name: Super-Linter
+name: Test
 
 on:
   workflow_dispatch:
-  push:
-  pull_request:
 
 jobs:
-  super-lint:
-    name: Lint code base
+  Test:
+    name: Test
     runs-on: ubuntu-latest
+    environment:
+      name: TestingEnvForDeployment
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Run Super-Linter
-        uses: github/super-linter@v4
-        env:
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print a Variable
+        run: |
+          MY_VAR="Hello, GitHub Actions!"
+          echo "The value of MY_VAR is: $MY_VAR"
+          echo "The value from secret and env is: ${{ vars.RESOURCEGROUPNAME }}"
