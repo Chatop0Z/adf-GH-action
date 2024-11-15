@@ -7,17 +7,9 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-dev-pep"
 		},
-		"DEMO_1DB_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'DEMO_1DB'"
-		},
 		"sta_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'sta'"
-		},
-		"vm_sql_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'vm_sql'"
 		},
 		"DEMO_1DB_properties_typeProperties_server": {
 			"type": "string",
@@ -131,12 +123,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"vm_sql_password": {
-						"value": "[parameters('vm_sql_password')]"
-					},
-					"DEMO_1DB_password": {
-						"value": "[parameters('DEMO_1DB_password')]"
 					},
 					"sta_accountKey": {
 						"value": "[parameters('sta_accountKey')]"
