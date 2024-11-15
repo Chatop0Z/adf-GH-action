@@ -72,7 +72,7 @@ jobs:
           inlineScript: ./artifacts/main/TriggerRestarter.ps1 
             -armTemplate ./artifacts/ARM/ARMTemplateForFactory.json 
             -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
-            -DataFactoryName ${{ vars.DATAFACTORYNAME_PROD }}
+            -DataFactoryName ${{ vars.DATAFACTORYNAME }}
             -predeployment $true 
             -deleteDeployment $false
           azPSVersion: "latest"
@@ -90,13 +90,14 @@ jobs:
           resourceGroupName: ${{ vars.RESOURCEGROUPNAME }}
           template: ./artifacts/ARM/ARMTemplateForFactory.json
           parameters: ./artifacts/ARM/ARMTemplateParametersForFactory.json 
-            factoryName=${{ vars.DATAFACTORYNAME_PROD }}
+            factoryName=${{ vars.DATAFACTORYNAME }}
             sta_accountKey=${{ steps.GetSecrets.outputs.prod-sta-key }}
             KeyVault_properties_typeProperties_baseUrl=https://kv-dev-pb.vault.azure.net/
+            Warehouse1_properties_typeProperties_endpoint=lw6pw23sjlqu7o4olo7s3ubnpi-2s7wpzloquzevpwwjby3lg644q.datawarehouse.fabric.microsoft.com
             sql_cv_sck_properties_typeProperties_server=pep-sql-test.database.windows.net
             sql_cv_sck_properties_typeProperties_database=@{trim(concat(linkedService().ENV,'test01'))}
             sql_cv_sck_properties_typeProperties_userName=superadmin
-            sta_properties_typeProperties_url=https://staprodpep.dfs.core.windows.net/
+            sta_properties_typeProperties_url=https://stadevpep.dfs.core.windows.net/
             mpep-sta_properties_privateLinkResourceId=/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/staprodpep
             mpep-sta_properties_groupId=dfs
             mpep-sta_properties_fqdns="[\"staprodpep.dfs.core.windows.net\"]"
@@ -107,8 +108,8 @@ jobs:
         with:
           inlineScript: ./artifacts/main/TriggerRestarter.ps1 
             -armTemplate ./artifacts/ARM/ARMTemplateForFactory.json 
-            -ResourceGroupName rg-GH-Action-CICD
-            -DataFactoryName adf-prod-pep 
+            -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
+            -DataFactoryName ${{ vars.DATAFACTORYNAME }}
             -predeployment $false 
             -deleteDeployment $true          
           azPSVersion: "latest"
