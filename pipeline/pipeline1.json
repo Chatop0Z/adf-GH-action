@@ -229,7 +229,7 @@
 					{
 						"activity": "Lake_to_Lake",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
@@ -293,13 +293,13 @@
 					{
 						"activity": "Lake_File_to_LakeTable",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					},
 					{
 						"activity": "Lake_File_to_LakeTable_copy1",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
