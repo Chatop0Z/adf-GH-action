@@ -11,6 +11,9 @@
 			},
 			"FileName": {
 				"type": "string"
+			},
+			"FileExtension": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -19,7 +22,7 @@
 			"location": {
 				"type": "LakehouseLocation",
 				"fileName": {
-					"value": "@dataset().FileName",
+					"value": "@concat(dataset().FileName, dataset().FileExtension)",
 					"type": "Expression"
 				},
 				"folderPath": {
