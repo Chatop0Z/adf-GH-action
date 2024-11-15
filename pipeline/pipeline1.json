@@ -17,6 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": "Select top (0) * FROM dbo.Customer",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -128,7 +129,7 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": false,
-							"wildcardFolderPath": "*",
+							"wildcardFileName": "*",
 							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
@@ -157,7 +158,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "SinkLakeFile",
+						"referenceName": "SinkLakeAll",
 						"type": "DatasetReference"
 					}
 				]
@@ -212,6 +213,63 @@
 						"parameters": {
 							"SchemaName": "dbo",
 							"TableName": "Customer"
+						}
+					}
+				]
+			},
+			{
+				"name": "File_to_Lake_File",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": false,
+							"wildcardFileName": "Customer_Relationship_Management_LeadComments*",
+							"deleteFilesAfterCompletion": false
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "LakehouseWriteSettings",
+							"copyBehavior": "PreserveHierarchy"
+						}
+					},
+					"enableStaging": false,
+					"skipErrorFile": {
+						"fileMissing": false,
+						"dataInconsistency": false
+					},
+					"validateDataConsistency": true
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceSta",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SinkLakeFile",
+						"type": "DatasetReference",
+						"parameters": {
+							"FolderPath": "Input",
+							"FileName": "Customer_Relationship_Management_LeadComments",
+							"FileExtension": ".csv"
 						}
 					}
 				]
