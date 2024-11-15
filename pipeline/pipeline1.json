@@ -271,7 +271,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FolderPath": "TEMP",
-							"FileName": "CustomerData.csv.csv"
+							"FileName": "CustomerData.csv"
 						}
 					}
 				],
@@ -305,7 +305,7 @@
 							"type": "LakehouseReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "Input",
-							"wildcardFileName": "Customer_Relationship_Management_LeadComments*",
+							"wildcardFileName": "CustomerData*",
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
@@ -799,6 +799,12 @@
 				]
 			}
 		],
+		"parameters": {
+			"Table": {
+				"type": "string",
+				"defaultValue": "Product"
+			}
+		},
 		"annotations": []
 	}
 }
