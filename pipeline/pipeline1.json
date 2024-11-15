@@ -129,6 +129,7 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": "TEMP",
 							"wildcardFileName": "*",
 							"deleteFilesAfterCompletion": false
 						},
@@ -155,7 +156,7 @@
 						"referenceName": "SourceSta",
 						"type": "DatasetReference",
 						"parameters": {
-							"FolderPath": " ",
+							"FolderPath": "TEMP",
 							"FileName": " "
 						}
 					}
@@ -224,7 +225,14 @@
 			{
 				"name": "File_to_Lake_File",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Lake_to_Lake",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -262,7 +270,7 @@
 						"referenceName": "SourceSta",
 						"type": "DatasetReference",
 						"parameters": {
-							"FolderPath": " ",
+							"FolderPath": "TEMP",
 							"FileName": "Customer_Relationship_Management_LeadComments.csv"
 						}
 					}
@@ -273,6 +281,67 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FolderPath": "Input",
+							"FileName": "Customer_Relationship_Management_LeadComments_NEW.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "Lake_to_Lake",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "LakehouseReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "Input",
+							"wildcardFileName": "Customer_Relationship_Management_LeadComments*",
+							"deleteFilesAfterCompletion": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "LakehouseWriteSettings",
+							"copyBehavior": "PreserveHierarchy"
+						}
+					},
+					"enableStaging": false,
+					"skipErrorFile": {
+						"fileMissing": false,
+						"dataInconsistency": false
+					},
+					"validateDataConsistency": true
+				},
+				"inputs": [
+					{
+						"referenceName": "SinkLakeFile",
+						"type": "DatasetReference",
+						"parameters": {
+							"FolderPath": "Input",
+							"FileName": " "
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SinkLakeFile",
+						"type": "DatasetReference",
+						"parameters": {
+							"FolderPath": "Processed",
 							"FileName": "Customer_Relationship_Management_LeadComments.csv"
 						}
 					}
