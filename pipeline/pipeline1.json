@@ -128,7 +128,7 @@
 						"type": "BinarySource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"recursive": false,
+							"recursive": true,
 							"wildcardFileName": "*",
 							"deleteFilesAfterCompletion": false
 						},
@@ -153,7 +153,11 @@
 				"inputs": [
 					{
 						"referenceName": "SourceSta",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FolderPath": " ",
+							"FileName": " "
+						}
 					}
 				],
 				"outputs": [
@@ -234,9 +238,7 @@
 						"type": "BinarySource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"recursive": false,
-							"wildcardFileName": "Customer_Relationship_Management_LeadComments*",
-							"deleteFilesAfterCompletion": false
+							"recursive": true
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
@@ -251,7 +253,6 @@
 					},
 					"enableStaging": false,
 					"skipErrorFile": {
-						"fileMissing": false,
 						"dataInconsistency": false
 					},
 					"validateDataConsistency": true
@@ -259,7 +260,11 @@
 				"inputs": [
 					{
 						"referenceName": "SourceSta",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FolderPath": " ",
+							"FileName": "Customer_Relationship_Management_LeadComments.csv"
+						}
 					}
 				],
 				"outputs": [
@@ -268,8 +273,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FolderPath": "Input",
-							"FileName": "Customer_Relationship_Management_LeadComments",
-							"FileExtension": ".csv"
+							"FileName": "Customer_Relationship_Management_LeadComments.csv"
 						}
 					}
 				]
