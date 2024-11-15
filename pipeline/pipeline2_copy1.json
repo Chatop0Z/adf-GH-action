@@ -1,5 +1,5 @@
 {
-	"name": "pipeline2",
+	"name": "pipeline2_copy1",
 	"properties": {
 		"activities": [
 			{
@@ -20,6 +20,151 @@
 						"sqlReaderQuery": "select top(1) * FROM dbo.customer",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "Append"
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "sta",
+							"type": "LinkedServiceReference"
+						},
+						"path": "staging",
+						"enableCompression": false
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CustomerID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "CustomerID",
+									"physicalType": "integer"
+								}
+							},
+							{
+								"source": {
+									"name": "FirstName",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FirstName",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "LastName",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "LastName",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "DateOfBirth",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "DateOfBirth",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "Email",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Email",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "PhoneNumber",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "PhoneNumber",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedAt",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedAt",
+									"physicalType": "timestamp"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceSQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "dbo",
+							"TableName": "Customer"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SinkLakeTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "dbo",
+							"TableName": "Customer"
+						}
+					}
+				]
+			},
+			{
+				"name": "Ware 0 Data_copy1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Ware 0 Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "LakehouseTableSource"
 					},
 					"sink": {
 						"type": "WarehouseSink",
@@ -72,11 +217,11 @@
 							{
 								"source": {
 									"name": "DateOfBirth",
-									"type": "DateTime"
+									"type": "Date"
 								},
 								"sink": {
 									"name": "DateOfBirth",
-									"type": "DateTime"
+									"type": "Date"
 								}
 							},
 							{
@@ -114,134 +259,11 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SourceSQL",
+						"referenceName": "SinkLakeTable",
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
 							"TableName": "Customer"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "SinkWarehouse",
-						"type": "DatasetReference",
-						"parameters": {
-							"SchemaName": "dbo",
-							"TableName": "Customer"
-						}
-					}
-				]
-			},
-			{
-				"name": "Ware 1 Data",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "WarehouseSink",
-						"allowCopyCommand": true,
-						"tableOption": "autoCreate",
-						"disableMetricsCollection": false
-					},
-					"enableStaging": true,
-					"stagingSettings": {
-						"linkedServiceName": {
-							"referenceName": "sta",
-							"type": "LinkedServiceReference"
-						},
-						"path": "staging",
-						"enableCompression": true
-					},
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "ProductID",
-									"type": "Int32"
-								},
-								"sink": {
-									"name": "ProductID",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "ProductName",
-									"type": "String"
-								},
-								"sink": {
-									"name": "ProductName",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "Category",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Category",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "Price",
-									"type": "Decimal"
-								},
-								"sink": {
-									"name": "Price",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"name": "StockQuantity",
-									"type": "Int32"
-								},
-								"sink": {
-									"name": "StockQuantity",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "CreatedAt",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "CreatedAt",
-									"type": "DateTime"
-								}
-							}
-						]
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "SourceSQL",
-						"type": "DatasetReference",
-						"parameters": {
-							"SchemaName": "dbo",
-							"TableName": {
-								"value": "@pipeline().parameters.Table",
-								"type": "Expression"
-							}
 						}
 					}
 				],
@@ -251,7 +273,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "stg",
-							"TableName": "Product"
+							"TableName": "Customer_Lake"
 						}
 					}
 				]
