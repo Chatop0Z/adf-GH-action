@@ -1,6 +1,5 @@
 {
 	"name": "vm_sql",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "SqlServer",
@@ -11,11 +10,19 @@
 			"trustServerCertificate": true,
 			"authenticationType": "SQL",
 			"userName": "superadmin",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI1Mzc1NTg3YS1lNjYxLTQ3MGYtYmQ0MS00YzExOGY1NDhmMTYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "KeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sc-vm-sql"
+			}
 		},
 		"connectVia": {
 			"referenceName": "shared-shir",
 			"type": "IntegrationRuntimeReference"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
