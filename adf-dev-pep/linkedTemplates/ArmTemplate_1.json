@@ -282,7 +282,7 @@
 							{
 								"activity": "Lake_to_Lake",
 								"dependencyConditions": [
-									"Succeeded"
+									"Completed"
 								]
 							}
 						],
@@ -345,6 +345,12 @@
 						"dependsOn": [
 							{
 								"activity": "Lake_File_to_LakeTable",
+								"dependencyConditions": [
+									"Completed"
+								]
+							},
+							{
+								"activity": "Lake_File_to_LakeTable_copy1",
 								"dependencyConditions": [
 									"Completed"
 								]

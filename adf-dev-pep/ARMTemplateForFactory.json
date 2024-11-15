@@ -391,7 +391,7 @@
 							{
 								"activity": "Lake_to_Lake",
 								"dependencyConditions": [
-									"Succeeded"
+									"Completed"
 								]
 							}
 						],
@@ -451,7 +451,20 @@
 					{
 						"name": "Lake_to_Lake",
 						"type": "Copy",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Lake_File_to_LakeTable",
+								"dependencyConditions": [
+									"Completed"
+								]
+							},
+							{
+								"activity": "Lake_File_to_LakeTable_copy1",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
