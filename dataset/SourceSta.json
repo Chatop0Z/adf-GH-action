@@ -1,0 +1,17 @@
+{
+	"name": "SourceSta",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sta",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "dlz"
+			}
+		}
+	}
+}

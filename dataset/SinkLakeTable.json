@@ -1,5 +1,5 @@
 {
-	"name": "LakehouseTable1",
+	"name": "SinkLakeTable",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Lakehouse1",
