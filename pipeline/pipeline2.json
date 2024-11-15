@@ -117,10 +117,8 @@
 				]
 			},
 			{
-				"name": "Lake Append to 0 Data",
+				"name": "Ware 1 Data_copy1",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -132,42 +130,334 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "AzureSqlSource",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "LakehouseReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
 					},
 					"sink": {
-						"type": "LakehouseTableSink",
-						"tableActionOption": "Append",
-						"partitionOption": "None"
+						"type": "WarehouseSink",
+						"allowCopyCommand": true,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
 					},
-					"enableStaging": false,
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "sta",
+							"type": "LinkedServiceReference"
+						},
+						"path": "staging",
+						"enableCompression": true
+					},
 					"translator": {
 						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
+						"mappings": [
+							{
+								"source": {
+									"name": "ID",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Comments",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Comments",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CmLeadSellerName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "CmLeadSellerName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "LeadNo",
+									"type": "String"
+								},
+								"sink": {
+									"name": "LeadNo",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "LeadID",
+									"type": "String"
+								},
+								"sink": {
+									"name": "LeadID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CompanyName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "CompanyName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ContactName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ContactName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ProductType",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ProductType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "JobDetail",
+									"type": "String"
+								},
+								"sink": {
+									"name": "JobDetail",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "JobStatus",
+									"type": "String"
+								},
+								"sink": {
+									"name": "JobStatus",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "FollowUpData",
+									"type": "String"
+								},
+								"sink": {
+									"name": "FollowUpData",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "LeadComment",
+									"type": "String"
+								},
+								"sink": {
+									"name": "LeadComment",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "LeadCommentName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "LeadCommentName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "LeadCommentDateTime",
+									"type": "String"
+								},
+								"sink": {
+									"name": "LeadCommentDateTime",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ActiveFlag",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ActiveFlag",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedBy",
+									"type": "String"
+								},
+								"sink": {
+									"name": "CreatedBy",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedOn",
+									"type": "String"
+								},
+								"sink": {
+									"name": "CreatedOn",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ModifiedBy",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ModifiedBy",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ModifiedOn",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ModifiedOn",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "OldLeadID",
+									"type": "String"
+								},
+								"sink": {
+									"name": "OldLeadID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prop_20",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prop_20",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prop_21",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prop_21",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prop_22",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prop_22",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prop_23",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prop_23",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prop_24",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prop_24",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prop_25",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prop_25",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prop_26",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prop_26",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prop_27",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prop_27",
+									"type": "String"
+								}
+							}
+						]
 					}
 				},
 				"inputs": [
 					{
-						"referenceName": "SourceSQL",
+						"referenceName": "DelimitedText1",
 						"type": "DatasetReference",
 						"parameters": {
-							"SchemaName": "dbo",
-							"TableName": "Customer"
+							"FolderPath": "Input",
+							"Filename": "Customer_Relationship_Management_LeadComments_NEW.csv"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "SinkLakeTable",
+						"referenceName": "SinkWarehouse",
 						"type": "DatasetReference",
 						"parameters": {
-							"SchemaName": "dbo",
-							"TableName": "Customer"
+							"SchemaName": "stg",
+							"TableName": "TEST"
 						}
 					}
 				]
