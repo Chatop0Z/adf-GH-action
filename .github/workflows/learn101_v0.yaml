@@ -81,7 +81,7 @@ jobs:
         uses: Azure/get-keyvault-secrets@v1
         with: 
           keyvault: 'kv-dev-pb'
-          secrets: 'prod-sta-key, sc-sql-test'
+          secrets: 'dev-sta-key, sc-sql-test'
         id: GetSecrets
 
       - name: 'ARM Template deployment: Resource Group scope'
@@ -91,7 +91,7 @@ jobs:
           template: ./artifacts/ARM/ARMTemplateForFactory.json
           parameters: ./artifacts/ARM/ARMTemplateParametersForFactory.json 
             factoryName=${{ vars.DATAFACTORYNAME }}
-            sta_accountKey=${{ steps.GetSecrets.outputs.prod-sta-key }}
+            sta_accountKey=${{ steps.GetSecrets.outputs.dev-sta-key }}
             KeyVault_properties_typeProperties_baseUrl=https://kv-dev-pb.vault.azure.net/
             Warehouse1_properties_typeProperties_endpoint=lw6pw23sjlqu7o4olo7s3ubnpi-2s7wpzloquzevpwwjby3lg644q.datawarehouse.fabric.microsoft.com
             sql_cv_sck_properties_typeProperties_server=pep-sql-test.database.windows.net
