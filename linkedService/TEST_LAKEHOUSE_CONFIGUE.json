@@ -1,0 +1,22 @@
+{
+	"name": "TEST_LAKEHOUSE_CONFIGUE",
+	"properties": {
+		"annotations": [],
+		"type": "Lakehouse",
+		"typeProperties": {
+			"workspaceId": "e567bfd4-856e-4a32-bed6-4871b59bdce4",
+			"artifactId": "09042a65-55c7-4dc6-9cf4-05135af4693e",
+			"tenant": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a",
+			"servicePrincipalId": "94eaa26d-b809-4e16-b33d-abad783678ae",
+			"servicePrincipalCredentialType": "ServicePrincipalKey",
+			"servicePrincipalCredential": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "KeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "fabric-service-principal-client-secret-value"
+			}
+		}
+	}
+}
