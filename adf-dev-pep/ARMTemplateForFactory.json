@@ -93,6 +93,14 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
+		"TEST_LAKEHOUSE_CONFIGUE_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
+		"TEST_LAKEHOUSE_CONFIGUE_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
 		"default_properties_ENV_value": {
 			"type": "string",
 			"defaultValue": "DEV_"
@@ -1812,7 +1820,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "Lakehouse1",
+					"referenceName": "TEST_LAKEHOUSE_CONFIGUE",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -1839,7 +1847,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Lakehouse1')]"
+				"[concat(variables('factoryId'), '/linkedServices/TEST_LAKEHOUSE_CONFIGUE')]"
 			]
 		},
 		{
@@ -2173,8 +2181,7 @@
 						"frequency": "Day",
 						"interval": 1,
 						"startTime": "2024-10-10T06:00:00",
-						"timeZone": "SE Asia Standard Time",
-						"schedule": {}
+						"timeZone": "SE Asia Standard Time"
 					}
 				}
 			},
@@ -2251,6 +2258,33 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TEST_LAKEHOUSE_CONFIGUE')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Lakehouse",
+				"typeProperties": {
+					"workspaceId": "e567bfd4-856e-4a32-bed6-4871b59bdce4",
+					"artifactId": "09042a65-55c7-4dc6-9cf4-05135af4693e",
+					"tenant": "[parameters('TEST_LAKEHOUSE_CONFIGUE_properties_typeProperties_tenant')]",
+					"servicePrincipalId": "[parameters('TEST_LAKEHOUSE_CONFIGUE_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredentialType": "ServicePrincipalKey",
+					"servicePrincipalCredential": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "KeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "fabric-service-principal-client-secret-value"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
 			]
 		},
 		{

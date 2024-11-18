@@ -70,6 +70,12 @@
 				"stadevpep.dfs.core.windows.net"
 			]
 		},
+		"TEST_LAKEHOUSE_CONFIGUE_properties_typeProperties_tenant": {
+			"value": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
+		"TEST_LAKEHOUSE_CONFIGUE_properties_typeProperties_servicePrincipalId": {
+			"value": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
 		"default_properties_ENV_value": {
 			"value": "DEV_"
 		},

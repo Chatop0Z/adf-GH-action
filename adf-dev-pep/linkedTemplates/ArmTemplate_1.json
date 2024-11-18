@@ -13,6 +13,40 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/SourceSQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DEMO_1DB",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"SchemaName": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"TableName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SourceSta')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -959,6 +993,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceSQL')]",
 				"[concat(variables('factoryId'), '/datasets/SourceSta')]"
 			]
 		},
@@ -1240,7 +1275,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceSQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pipeline2_copy1')]",
@@ -1541,7 +1578,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceSQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/trigger_TEST_0310')]",
@@ -1565,8 +1604,7 @@
 						"frequency": "Day",
 						"interval": 1,
 						"startTime": "2024-10-10T06:00:00",
-						"timeZone": "SE Asia Standard Time",
-						"schedule": {}
+						"timeZone": "SE Asia Standard Time"
 					}
 				}
 			},
