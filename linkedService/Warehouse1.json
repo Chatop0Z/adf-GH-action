@@ -2,10 +2,10 @@
 	"name": "Warehouse1",
 	"properties": {
 		"parameters": {
-			"Fabric workspace ID": {
+			"Fabric_workspace_ID": {
 				"type": "string"
 			},
-			"Warehouse ID": {
+			"Warehouse_ID": {
 				"type": "string"
 			}
 		},
