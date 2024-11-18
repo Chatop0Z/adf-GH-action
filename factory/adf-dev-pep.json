@@ -5,6 +5,10 @@
 			"ENV": {
 				"type": "string",
 				"value": "DEV_"
+			},
+			"Lakehouse_ID": {
+				"type": "string",
+				"value": "261a998c-c2c7-46ba-9da8-2d38b8dfef98"
 			}
 		}
 	},
