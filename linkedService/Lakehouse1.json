@@ -2,10 +2,10 @@
 	"name": "Lakehouse1",
 	"properties": {
 		"parameters": {
-			"Fabric workspace ID": {
+			"Fabric_workspace_ID": {
 				"type": "string"
 			},
-			"Lakehouse ID": {
+			"Lakehouse_ID": {
 				"type": "string"
 			}
 		},
