@@ -3,13 +3,29 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Warehouse1",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"Fabric_workspace_ID": {
+					"value": "@dataset().Fabric_workspace_ID",
+					"type": "Expression"
+				},
+				"Warehouse_ID": {
+					"value": "@dataset().Warehouse_ID",
+					"type": "Expression"
+				}
+			}
 		},
 		"parameters": {
 			"SchemaName": {
 				"type": "string"
 			},
 			"TableName": {
+				"type": "string"
+			},
+			"Fabric_workspace_ID": {
+				"type": "string"
+			},
+			"Warehouse_ID": {
 				"type": "string"
 			}
 		},
