@@ -493,7 +493,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
-							"TableName": "TEST"
+							"TableName": "TEST",
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							},
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -632,7 +640,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
-							"TableName": "TEST_1"
+							"TableName": "TEST_1",
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							},
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]

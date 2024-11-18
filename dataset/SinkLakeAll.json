@@ -3,7 +3,25 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Lakehouse1",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"Fabric_workspace_ID": {
+					"value": "@dataset().Fabric_workspace_ID",
+					"type": "Expression"
+				},
+				"Lakehouse_ID": {
+					"value": "@dataset().Lakehouse_ID",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"Lakehouse_ID": {
+				"type": "string"
+			},
+			"Fabric_workspace_ID": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "Binary",
