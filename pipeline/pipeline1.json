@@ -405,7 +405,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FolderPath": "Processed",
-							"FileName": "CustomerData.csv"
+							"FileName": "CustomerData.csv",
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							},
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -533,7 +541,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FolderPath": "Input",
-							"Filename": "CustomerData.csv"
+							"Filename": "CustomerData.csv",
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							},
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -680,7 +696,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FolderPath": "Input",
-							"Filename": "CustomerData.csv"
+							"Filename": "CustomerData.csv",
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							},
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				],
