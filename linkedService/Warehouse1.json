@@ -1,12 +1,20 @@
 {
 	"name": "Warehouse1",
 	"properties": {
+		"parameters": {
+			"Fabric workspace ID": {
+				"type": "string"
+			},
+			"Warehouse ID": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Warehouse",
 		"typeProperties": {
 			"endpoint": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.datawarehouse.fabric.microsoft.com",
-			"artifactId": "8386461c-7b38-406f-a0ed-15594b924f7c",
-			"workspaceId": "13f067e3-82e1-4fd4-be6a-b76b466794d5",
+			"artifactId": "@linkedService().Warehouse ID",
+			"workspaceId": "@linkedService().Fabric workspace ID",
 			"tenant": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a",
 			"servicePrincipalCredentialType": "ServicePrincipalKey",
 			"servicePrincipalId": "94eaa26d-b809-4e16-b33d-abad783678ae",
