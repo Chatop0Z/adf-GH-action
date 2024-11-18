@@ -52,7 +52,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
-							"TableName": "CustomerEmp"
+							"TableName": "CustomerEmp",
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							},
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -106,7 +114,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
-							"TableName": "Product"
+							"TableName": "Product",
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							},
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -164,7 +180,17 @@
 				"outputs": [
 					{
 						"referenceName": "SinkLakeAll",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							},
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			},
@@ -217,7 +243,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
-							"TableName": "Customer"
+							"TableName": "Customer",
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							},
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -281,7 +315,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FolderPath": "Input",
-							"FileName": "CustomerData.csv"
+							"FileName": "CustomerData.csv",
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							},
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -345,7 +387,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FolderPath": "Input",
-							"FileName": " "
+							"FileName": " ",
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							},
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				],
