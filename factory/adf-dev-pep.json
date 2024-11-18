@@ -13,6 +13,10 @@
 			"Fabric_workspace_ID": {
 				"type": "string",
 				"value": "13f067e3-82e1-4fd4-be6a-b76b466794d5"
+			},
+			"Warehouse_ID": {
+				"type": "string",
+				"value": "13f067e3-82e1-4fd4-be6a-b76b466794d5"
 			}
 		}
 	},
