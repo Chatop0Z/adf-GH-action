@@ -2,7 +2,7 @@
 	"name": "SinkLakeTable",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "TEST_LAKEHOUSE_CONFIGUE",
+			"referenceName": "Lakehouse1",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
