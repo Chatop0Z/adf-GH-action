@@ -13,8 +13,8 @@
 		"type": "Warehouse",
 		"typeProperties": {
 			"endpoint": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.datawarehouse.fabric.microsoft.com",
-			"artifactId": "@linkedService().Warehouse ID",
-			"workspaceId": "@linkedService().Fabric workspace ID",
+			"artifactId": "@linkedService().Warehouse_ID",
+			"workspaceId": "@linkedService().Fabric_workspace_ID",
 			"tenant": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a",
 			"servicePrincipalCredentialType": "ServicePrincipalKey",
 			"servicePrincipalId": "94eaa26d-b809-4e16-b33d-abad783678ae",
