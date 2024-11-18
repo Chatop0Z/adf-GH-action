@@ -128,7 +128,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
-							"TableName": "Customer"
+							"TableName": "Customer",
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							},
+							"Warehouse_ID": {
+								"value": "@pipeline().globalParameters.Warehouse_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -251,7 +259,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "stg",
-							"TableName": "Product"
+							"TableName": "Product",
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							},
+							"Warehouse_ID": {
+								"value": "@pipeline().globalParameters.Warehouse_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]

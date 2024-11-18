@@ -138,7 +138,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
-							"TableName": "Customer"
+							"TableName": "Customer",
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							},
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -263,7 +271,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
-							"TableName": "Customer"
+							"TableName": "Customer",
+							"Lakehouse_ID": {
+								"value": "@pipeline().globalParameters.Lakehouse_ID",
+								"type": "Expression"
+							},
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -273,7 +289,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "stg",
-							"TableName": "Customer_Lake"
+							"TableName": "Customer_Lake",
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							},
+							"Warehouse_ID": {
+								"value": "@pipeline().globalParameters.Warehouse_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]
