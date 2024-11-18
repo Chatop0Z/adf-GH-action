@@ -853,7 +853,11 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
-							"TableName": "Customer"
+							"TableName": "Customer",
+							"Fabric_workspace_ID": {
+								"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+								"type": "Expression"
+							}
 						}
 					}
 				]
