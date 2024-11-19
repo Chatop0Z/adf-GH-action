@@ -13,40 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/SourceSQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DEMO_1DB",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"SchemaName": {
-						"type": "string",
-						"defaultValue": "dbo"
-					},
-					"TableName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": {
-						"value": "@dataset().SchemaName",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/SourceSta')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -138,7 +104,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
-									"TableName": "CustomerEmp"
+									"TableName": "CustomerEmp",
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									},
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -192,7 +166,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
-									"TableName": "Product"
+									"TableName": "Product",
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									},
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -251,7 +233,16 @@
 							{
 								"referenceName": "SinkLakeAll",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									},
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									}
+								}
 							}
 						]
 					},
@@ -304,7 +295,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
-									"TableName": "Customer"
+									"TableName": "Customer",
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									},
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -368,7 +367,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"FolderPath": "Input",
-									"FileName": "CustomerData.csv"
+									"FileName": "CustomerData.csv",
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									},
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -432,7 +439,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"FolderPath": "Input",
-									"FileName": " "
+									"FileName": " ",
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									},
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						],
@@ -442,7 +457,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"FolderPath": "Processed",
-									"FileName": "CustomerData.csv"
+									"FileName": "CustomerData.csv",
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									},
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -570,7 +593,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"FolderPath": "Input",
-									"Filename": "CustomerData.csv"
+									"Filename": "CustomerData.csv",
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									},
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						],
@@ -580,7 +611,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
-									"TableName": "TEST"
+									"TableName": "TEST",
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									},
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -709,7 +748,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"FolderPath": "Input",
-									"Filename": "CustomerData.csv"
+									"Filename": "CustomerData.csv",
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									},
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						],
@@ -719,7 +766,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
-									"TableName": "TEST_1"
+									"TableName": "TEST_1",
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									},
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -851,7 +906,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
-									"TableName": "Customer"
+									"TableName": "Customer",
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									},
+									"Warehouse_ID": {
+										"value": "@pipeline().globalParameters.Warehouse_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -975,7 +1038,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "stg",
-									"TableName": "Product"
+									"TableName": "Product",
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									},
+									"Warehouse_ID": {
+										"value": "@pipeline().globalParameters.Warehouse_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -993,7 +1064,6 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceSQL')]",
 				"[concat(variables('factoryId'), '/datasets/SourceSta')]"
 			]
 		},
@@ -1130,7 +1200,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
-									"TableName": "Customer"
+									"TableName": "Customer",
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									},
+									"Warehouse_ID": {
+										"value": "@pipeline().globalParameters.Warehouse_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -1254,7 +1332,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "stg",
-									"TableName": "Product"
+									"TableName": "Product",
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									},
+									"Warehouse_ID": {
+										"value": "@pipeline().globalParameters.Warehouse_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -1275,9 +1361,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceSQL')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pipeline2_copy1')]",
@@ -1421,7 +1505,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
-									"TableName": "Customer"
+									"TableName": "Customer",
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									},
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -1547,7 +1639,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
-									"TableName": "Customer"
+									"TableName": "Customer",
+									"Lakehouse_ID": {
+										"value": "@pipeline().globalParameters.Lakehouse_ID",
+										"type": "Expression"
+									},
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						],
@@ -1557,7 +1657,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "stg",
-									"TableName": "Customer_Lake"
+									"TableName": "Customer_Lake",
+									"Fabric_workspace_ID": {
+										"value": "@pipeline().globalParameters.Fabric_workspace_ID",
+										"type": "Expression"
+									},
+									"Warehouse_ID": {
+										"value": "@pipeline().globalParameters.Warehouse_ID",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -1578,9 +1686,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceSQL')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/trigger_TEST_0310')]",

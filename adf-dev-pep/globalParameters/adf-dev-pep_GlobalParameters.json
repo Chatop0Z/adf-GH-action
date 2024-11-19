@@ -2,5 +2,17 @@
 	"ENV": {
 		"type": "string",
 		"value": "DEV_"
+	},
+	"Lakehouse_ID": {
+		"type": "string",
+		"value": "261a998c-c2c7-46ba-9da8-2d38b8dfef98"
+	},
+	"Fabric_workspace_ID": {
+		"type": "string",
+		"value": "13f067e3-82e1-4fd4-be6a-b76b466794d5"
+	},
+	"Warehouse_ID": {
+		"type": "string",
+		"value": "8386461c-7b38-406f-a0ed-15594b924f7c"
 	}
 }
