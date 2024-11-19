@@ -102,6 +102,9 @@ jobs:
             mpep-sta_properties_groupId=dfs
             mpep-sta_properties_fqdns="[\"stadevpep.dfs.core.windows.net\"]"
             default_properties_ENV_value=" "
+            default_properties_Lakehouse_ID_value=09042a65-55c7-4dc6-9cf4-05135af4693e
+            default_properties_Fabric_workspace_ID_value=e567bfd4-856e-4a32-bed6-4871b59bdce4
+            default_properties_Warehouse_ID_value=07061d43-f149-42a8-9757-ac426e93c4dd
 
       - name: Run Azure PowerShell inline script for START TRIGGER
         uses: azure/powershell@v2
