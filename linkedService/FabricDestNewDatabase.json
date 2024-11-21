@@ -1,0 +1,24 @@
+{
+	"name": "FabricDestNewDatabase",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.database.fabric.microsoft.com,1433",
+			"database": "Test2-f803271f-d337-4079-85b5-d3a0dd741a1e",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "ServicePrincipal",
+			"servicePrincipalId": "94eaa26d-b809-4e16-b33d-abad783678ae",
+			"servicePrincipalCredential": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "KeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "fabric-service-principal-client-secret-value"
+			},
+			"tenant": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		}
+	}
+}
