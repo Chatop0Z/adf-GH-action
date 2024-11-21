@@ -1,0 +1,28 @@
+{
+	"name": "FabricNewDatabase",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.database.fabric.microsoft.com",
+			"database": "Test-38d53cd9-1a72-4abf-9d64-e7baf09400fd",
+			"encrypt": "True",
+			"trustServerCertificate": true,
+			"authenticationType": "ServicePrincipal",
+			"servicePrincipalId": "94eaa26d-b809-4e16-b33d-abad783678ae",
+			"servicePrincipalCredential": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "KeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "fabric-service-principal-client-secret-value"
+			},
+			"tenant": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
+		"connectVia": {
+			"referenceName": "pep-air",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
