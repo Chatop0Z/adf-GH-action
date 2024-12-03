@@ -101,7 +101,28 @@ jobs:
       #     containerSasToken=$(jq -r '.containerSasToken' adf-dev-pep/linkedTemplates/ArmTemplate_master.json)
       #     echo "CONTAINER_URI=$containerUri" >> $GITHUB_ENV
       #     echo "CONTAINER_SAS_TOKEN=$containerSasToken" >> $GITHUB_ENV
-
+      
+      - name: Print Variables for Debugging
+        run: |
+          echo "RESOURCEGROUPNAME: ${{ vars.RESOURCEGROUPNAME }}"
+          echo "DATAFACTORYNAME: ${{ vars.DATAFACTORYNAME }}"
+          echo "sta_accountKey: ${{ steps.GetSecrets.outputs.dev-sta-key }}"
+          echo "KeyVault Base URL: https://kv-dev-pb.vault.azure.net/"
+          echo "Warehouse Endpoint: lw6pw23sjlqu7o4olo7s3ubnpi-2s7wpzloquzevpwwjby3lg644q.datawarehouse.fabric.microsoft.com"
+          echo "SQL Server: pep-sql-test.database.windows.net"
+          echo "Database Name: $(echo \"@{trim(concat(linkedService().ENV,'test01'))}\")"
+          echo "Admin Username: superadmin"
+          echo "Storage URL: https://stadevpep.dfs.core.windows.net/"
+          echo "Private Link Resource ID: /subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep"
+          echo "Private Link Group ID: dfs"
+          echo "Private Link FQDNs: ['stadevpep.dfs.core.windows.net']"
+          echo "Environment Value: ${{ vars.default_properties_ENV_value }}"
+          echo "Lakehouse ID: ${{ vars.default_properties_Lakehouse_ID_value }}"
+          echo "Fabric Workspace ID: ${{ vars.default_properties_Fabric_workspace_ID_value }}"
+          echo "Warehouse ID: ${{ vars.default_properties_Warehouse_ID_value }}"
+          echo "Container URI: https://fabic.blob.core.windows.net/fabic"
+          echo "Container SAS Token: ${{ vars.containerSasToken }}"
+          
       - name: 'ARM Template deployment: Resource Group scope'
         uses: azure/arm-deploy@v1
         with:
