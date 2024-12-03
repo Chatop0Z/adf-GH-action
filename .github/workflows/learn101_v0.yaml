@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Main Branch
         uses: actions/checkout@v2
         with:
-          ref: adf_publish
+          ref: main
 
       - name: Upload Files from Main Branch
         uses: actions/upload-artifact@v3
@@ -45,6 +45,11 @@ jobs:
     environment:
       name: TestingEnvForDeployment
     steps:
+      - name: Checkout ADF Publish Branch
+        uses: actions/checkout@v2
+        with:
+          ref: adf_publish
+    
       - name: Download Files from Main Branch Artifact
         uses: actions/download-artifact@v3
         with:
