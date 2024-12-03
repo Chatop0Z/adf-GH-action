@@ -75,16 +75,17 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true 
-      - name: Run Azure PowerShell inline script for STOP TRIGGER
-        uses: azure/powershell@v2
-        with:
-          inlineScript: ./artifacts/main/TriggerRestarter.ps1 
-            -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json
-            -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
-            -DataFactoryName ${{ vars.DATAFACTORYNAME }}
-            -predeployment $true 
-            -deleteDeployment $false
-          azPSVersion: "latest"
+          
+      # - name: Run Azure PowerShell inline script for STOP TRIGGER
+      #   uses: azure/powershell@v2
+      #   with:
+      #     inlineScript: ./artifacts/main/TriggerRestarter.ps1 
+      #       -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json
+      #       -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
+      #       -DataFactoryName ${{ vars.DATAFACTORYNAME }}
+      #       -predeployment $true 
+      #       -deleteDeployment $false
+      #     azPSVersion: "latest"
  
       - name: Gathering keys from Azure key vault
         uses: Azure/get-keyvault-secrets@v1
@@ -101,7 +102,7 @@ jobs:
       #     echo "CONTAINER_SAS_TOKEN=$containerSasToken" >> $GITHUB_ENV
  
       - name: 'ARM Template deployment: Resource Group scope'
-        uses: azure/arm-deploy@v1
+        uses: azure/arm-deploy@v2
         with:
           resourceGroupName: ${{ vars.RESOURCEGROUPNAME }}
           template: adf-dev-pep/linkedTemplates/ArmTemplate_master.json
@@ -124,13 +125,13 @@ jobs:
             containerUri=https://raw.githubusercontent.com/Chatop0Z/adf-GH-action/refs/heads/adf_publish/adf-dev-pep/linkedTemplates
             containerSasToken=" "
  
-      - name: Run Azure PowerShell inline script for START TRIGGER
-        uses: azure/powershell@v2
-        with:
-          inlineScript: ./artifacts/main/TriggerRestarter.ps1 
-            -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json
-            -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
-            -DataFactoryName ${{ vars.DATAFACTORYNAME }}
-            -predeployment $false 
-            -deleteDeployment $true          
-          azPSVersion: "latest"
+      # - name: Run Azure PowerShell inline script for START TRIGGER
+      #   uses: azure/powershell@v2
+      #   with:
+      #     inlineScript: ./artifacts/main/TriggerRestarter.ps1 
+      #       -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json
+      #       -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
+      #       -DataFactoryName ${{ vars.DATAFACTORYNAME }}
+      #       -predeployment $false 
+      #       -deleteDeployment $true          
+      #     azPSVersion: "latest"
