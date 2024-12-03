@@ -1,4 +1,4 @@
-name: Upload Files and Deploy ARM Templates
+name: Upload Files from Branches
 
 on:
   workflow_dispatch:
@@ -19,12 +19,29 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: main-branch-artifact
-          path: TriggerRestarter.ps1
+          path: |
+            TriggerRestarter.ps1
+
+  # upload-artifact-adf:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout ADF Publish Branch
+  #       uses: actions/checkout@v2
+  #       with:
+  #         ref: adf_publish
+
+  #     - name: Upload Files from ADF Publish Branch
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: adf-publish-branch-artifact
+  #         path: |
+  #           adf-dev-pep/ARMTemplateParametersForFactory.json
+  #           adf-dev-pep/ARMTemplateForFactory.json
 
   ARM-Template-Deployment:
-    name: Deploy ARM Templates
+    name: Deploying ARM-Template
     runs-on: ubuntu-latest
-    needs: [upload-artifact-main]
+    needs: [upload-artifact-main] #[upload-artifact-main, upload-artifact-adf]
     environment:
       name: TestingEnvForDeployment
     steps:
@@ -42,50 +59,61 @@ jobs:
       - name: List files in working directory
         run: ls -R
 
-      - name: Install `tree` for directory visualization
+      - name: Show directory tree
         run: |
           sudo apt-get update
           sudo apt-get install -y tree
           tree
 
-      - name: Login to Azure
+      # - name: Download Files from ADF Publish Branch Artifact
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: adf-publish-branch-artifact
+      #     path: ./artifacts/ARM
+
+      - name: Login via Az module
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true 
-
-      - name: Run STOP TRIGGER script
+      
+      - name: Run Azure PowerShell inline script for STOP TRIGGER
         uses: azure/powershell@v2
         with:
-          inlineScript: |
-            ./artifacts/main/TriggerRestarter.ps1 `
-            -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json `
-            -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }} `
-            -DataFactoryName ${{ vars.DATAFACTORYNAME }} `
-            -predeployment $true `
+          inlineScript: ./artifacts/main/TriggerRestarter.ps1 
+            -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json
+            -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
+            -DataFactoryName ${{ vars.DATAFACTORYNAME }}
+            -predeployment $true 
             -deleteDeployment $false
           azPSVersion: "latest"
 
-      - name: Retrieve secrets from Azure Key Vault
-        uses: azure/get-keyvault-secrets@v1
-        with:
+      - name: Gathering keys from Azure key vault
+        uses: Azure/get-keyvault-secrets@v1
+        with: 
           keyvault: 'kv-dev-pb'
-          secrets: 'dev-sta-key,sc-sql-test'
+          secrets: 'dev-sta-key, sc-sql-test'
         id: GetSecrets
 
-      - name: Deploy ARM Template
+      # - name: Load Parameters
+      #   run: |
+      #     containerUri=$(jq -r '.containerUri' adf-dev-pep/linkedTemplates/ArmTemplate_master.json)
+      #     containerSasToken=$(jq -r '.containerSasToken' adf-dev-pep/linkedTemplates/ArmTemplate_master.json)
+      #     echo "CONTAINER_URI=$containerUri" >> $GITHUB_ENV
+      #     echo "CONTAINER_SAS_TOKEN=$containerSasToken" >> $GITHUB_ENV
+
+      - name: 'ARM Template deployment: Resource Group scope'
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: ${{ vars.RESOURCEGROUPNAME }}
           template: adf-dev-pep/linkedTemplates/ArmTemplate_master.json
-          parameters: adf-dev-pep/linkedTemplates/ArmTemplateParameters_master.json
-          parametersFile: |
+          parameters: adf-dev-pep/linkedTemplates/ArmTemplateParameters_master.json 
             factoryName=${{ vars.DATAFACTORYNAME }}
             sta_accountKey=${{ steps.GetSecrets.outputs.dev-sta-key }}
             KeyVault_properties_typeProperties_baseUrl=https://kv-dev-pb.vault.azure.net/
             Warehouse1_properties_typeProperties_endpoint=lw6pw23sjlqu7o4olo7s3ubnpi-2s7wpzloquzevpwwjby3lg644q.datawarehouse.fabric.microsoft.com
             sql_cv_sck_properties_typeProperties_server=pep-sql-test.database.windows.net
-            sql_cv_sck_properties_typeProperties_database=${{ vars.SQL_DATABASE }}
+            sql_cv_sck_properties_typeProperties_database=@{trim(concat(linkedService().ENV,'test01'))}
             sql_cv_sck_properties_typeProperties_userName=superadmin
             sta_properties_typeProperties_url=https://stadevpep.dfs.core.windows.net/
             mpep-sta_properties_privateLinkResourceId=/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep
@@ -98,14 +126,13 @@ jobs:
             containerUri=adf-dev-pep/linkedTemplates
             containerSasToken=" "
 
-      - name: Run START TRIGGER script
+      - name: Run Azure PowerShell inline script for START TRIGGER
         uses: azure/powershell@v2
         with:
-          inlineScript: |
-            ./artifacts/main/TriggerRestarter.ps1 `
-            -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json `
-            -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }} `
-            -DataFactoryName ${{ vars.DATAFACTORYNAME }} `
-            -predeployment $false `
-            -deleteDeployment $true
+          inlineScript: ./artifacts/main/TriggerRestarter.ps1 
+            -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json
+            -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
+            -DataFactoryName ${{ vars.DATAFACTORYNAME }}
+            -predeployment $false 
+            -deleteDeployment $true          
           azPSVersion: "latest"
