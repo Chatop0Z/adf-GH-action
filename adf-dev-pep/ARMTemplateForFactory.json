@@ -23,6 +23,38 @@
 			"type": "string",
 			"defaultValue": "superadmin"
 		},
+		"FabricDestNewDatabase_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.database.fabric.microsoft.com,1433"
+		},
+		"FabricDestNewDatabase_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Test2-f803271f-d337-4079-85b5-d3a0dd741a1e"
+		},
+		"FabricDestNewDatabase_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
+		"FabricDestNewDatabase_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
+		"FabricNewDatabase_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.database.fabric.microsoft.com"
+		},
+		"FabricNewDatabase_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Test-38d53cd9-1a72-4abf-9d64-e7baf09400fd"
+		},
+		"FabricNewDatabase_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
+		"FabricNewDatabase_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-dev-pb.vault.azure.net/"
@@ -1826,6 +1858,43 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FabricDestNewDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Schema": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"Table": {
+						"type": "string",
+						"defaultValue": "test"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().Schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().Table",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FabricDestNewDatabase')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LakeCSV')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2224,6 +2293,69 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/FabricDestNewDatabase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('FabricDestNewDatabase_properties_typeProperties_server')]",
+					"database": "[parameters('FabricDestNewDatabase_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "ServicePrincipal",
+					"servicePrincipalId": "[parameters('FabricDestNewDatabase_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "KeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "fabric-service-principal-client-secret-value"
+					},
+					"tenant": "[parameters('FabricDestNewDatabase_properties_typeProperties_tenant')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FabricNewDatabase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('FabricNewDatabase_properties_typeProperties_server')]",
+					"database": "[parameters('FabricNewDatabase_properties_typeProperties_database')]",
+					"encrypt": "True",
+					"trustServerCertificate": true,
+					"authenticationType": "ServicePrincipal",
+					"servicePrincipalId": "[parameters('FabricNewDatabase_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "KeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "fabric-service-principal-client-secret-value"
+					},
+					"tenant": "[parameters('FabricNewDatabase_properties_typeProperties_tenant')]"
+				},
+				"connectVia": {
+					"referenceName": "pep-air",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/pep-air')]",
+				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/KeyVault')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -2506,6 +2638,29 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/2024_12_03')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Wait1",
+						"type": "Wait",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 10
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/default')]",

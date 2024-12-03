@@ -23,6 +23,38 @@
 			"type": "string",
 			"defaultValue": "superadmin"
 		},
+		"FabricDestNewDatabase_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.database.fabric.microsoft.com,1433"
+		},
+		"FabricDestNewDatabase_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Test2-f803271f-d337-4079-85b5-d3a0dd741a1e"
+		},
+		"FabricDestNewDatabase_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
+		"FabricDestNewDatabase_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
+		"FabricNewDatabase_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.database.fabric.microsoft.com"
+		},
+		"FabricNewDatabase_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Test-38d53cd9-1a72-4abf-9d64-e7baf09400fd"
+		},
+		"FabricNewDatabase_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
+		"FabricNewDatabase_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
 		"KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-dev-pb.vault.azure.net/"
@@ -111,11 +143,11 @@
 		},
 		"containerUri": {
 			"type": "string",
-			"metadata": "https://fabic.blob.core.windows.net/fabic"
+			"metadata": "URI to storage account containing linked ARM templates"
 		},
 		"containerSasToken": {
 			"type": "string",
-			"metadata": "sp=r&st=2024-12-03T06:19:49Z&se=2025-01-11T14:19:49Z&spr=https&sv=2022-11-02&sr=b&sig=jjUq9ctdNY4JhHvCFdb934bPK3CHomRIvJRgiGL93IA%3D"
+			"metadata": "Sas token to storage account containing linked ARM templates"
 		}
 	},
 	"variables": {
@@ -157,6 +189,18 @@
 					"shared-shir_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('shared-shir_properties_typeProperties_linkedInfo_resourceId')]"
 					},
+					"FabricDestNewDatabase_properties_typeProperties_server": {
+						"value": "[parameters('FabricDestNewDatabase_properties_typeProperties_server')]"
+					},
+					"FabricDestNewDatabase_properties_typeProperties_database": {
+						"value": "[parameters('FabricDestNewDatabase_properties_typeProperties_database')]"
+					},
+					"FabricDestNewDatabase_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('FabricDestNewDatabase_properties_typeProperties_servicePrincipalId')]"
+					},
+					"FabricDestNewDatabase_properties_typeProperties_tenant": {
+						"value": "[parameters('FabricDestNewDatabase_properties_typeProperties_tenant')]"
+					},
 					"sql_cv_sck_properties_typeProperties_server": {
 						"value": "[parameters('sql_cv_sck_properties_typeProperties_server')]"
 					},
@@ -192,6 +236,18 @@
 					},
 					"DEMO_1DB_properties_typeProperties_userName": {
 						"value": "[parameters('DEMO_1DB_properties_typeProperties_userName')]"
+					},
+					"FabricNewDatabase_properties_typeProperties_server": {
+						"value": "[parameters('FabricNewDatabase_properties_typeProperties_server')]"
+					},
+					"FabricNewDatabase_properties_typeProperties_database": {
+						"value": "[parameters('FabricNewDatabase_properties_typeProperties_database')]"
+					},
+					"FabricNewDatabase_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('FabricNewDatabase_properties_typeProperties_servicePrincipalId')]"
+					},
+					"FabricNewDatabase_properties_typeProperties_tenant": {
+						"value": "[parameters('FabricNewDatabase_properties_typeProperties_tenant')]"
 					},
 					"Lakehouse1_properties_typeProperties_tenant": {
 						"value": "[parameters('Lakehouse1_properties_typeProperties_tenant')]"

@@ -13,6 +13,190 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/SinkLakeFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Lakehouse1",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Fabric_workspace_ID": {
+							"value": "@dataset().Fabric_workspace_ID",
+							"type": "Expression"
+						},
+						"Lakehouse_ID": {
+							"value": "@dataset().Lakehouse_ID",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"FolderPath": {
+						"type": "string"
+					},
+					"FileName": {
+						"type": "string"
+					},
+					"Fabric_workspace_ID": {
+						"type": "string"
+					},
+					"Lakehouse_ID": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "LakehouseLocation",
+						"fileName": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().FolderPath",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SinkLakeTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Lakehouse1",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Fabric_workspace_ID": {
+							"value": "@dataset().Fabric_workspace_ID",
+							"type": "Expression"
+						},
+						"Lakehouse_ID": {
+							"value": "@dataset().Lakehouse_ID",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"SchemaName": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"TableName": {
+						"type": "string"
+					},
+					"Lakehouse_ID": {
+						"type": "string"
+					},
+					"Fabric_workspace_ID": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "LakehouseTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SinkWarehouse')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Warehouse1",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Fabric_workspace_ID": {
+							"value": "@dataset().Fabric_workspace_ID",
+							"type": "Expression"
+						},
+						"Warehouse_ID": {
+							"value": "@dataset().Warehouse_ID",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"SchemaName": {
+						"type": "string"
+					},
+					"TableName": {
+						"type": "string"
+					},
+					"Fabric_workspace_ID": {
+						"type": "string"
+					},
+					"Warehouse_ID": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "WarehouseTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceSQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DEMO_1DB",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"SchemaName": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"TableName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SourceSta')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1064,7 +1248,11 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceSta')]"
+				"[concat(variables('factoryId'), '/datasets/SourceSQL')]",
+				"[concat(variables('factoryId'), '/datasets/SinkLakeTable')]",
+				"[concat(variables('factoryId'), '/datasets/SourceSta')]",
+				"[concat(variables('factoryId'), '/datasets/SinkLakeFile')]",
+				"[concat(variables('factoryId'), '/datasets/SinkWarehouse')]"
 			]
 		},
 		{
@@ -1361,7 +1549,10 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceSQL')]",
+				"[concat(variables('factoryId'), '/datasets/SinkWarehouse')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pipeline2_copy1')]",
@@ -1686,7 +1877,11 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceSQL')]",
+				"[concat(variables('factoryId'), '/datasets/SinkLakeTable')]",
+				"[concat(variables('factoryId'), '/datasets/SinkWarehouse')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/trigger_TEST_0310')]",

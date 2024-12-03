@@ -35,6 +35,22 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourcegroups/rg-GH-Action-CICD/providers/Microsoft.DataFactory/factories/adf-shir-pep/integrationruntimes/shir-host"
 		},
+		"FabricDestNewDatabase_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.database.fabric.microsoft.com,1433"
+		},
+		"FabricDestNewDatabase_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Test2-f803271f-d337-4079-85b5-d3a0dd741a1e"
+		},
+		"FabricDestNewDatabase_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
+		"FabricDestNewDatabase_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
+		},
 		"sql_cv_sck_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "pep-sql-test.database.windows.net"
@@ -84,6 +100,22 @@
 		"DEMO_1DB_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "superadmin"
+		},
+		"FabricNewDatabase_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "lw6pw23sjlqu7o4olo7s3ubnpi-4nt7ae7bqlke7ptkw5vumz4u2u.database.fabric.microsoft.com"
+		},
+		"FabricNewDatabase_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Test-38d53cd9-1a72-4abf-9d64-e7baf09400fd"
+		},
+		"FabricNewDatabase_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "94eaa26d-b809-4e16-b33d-abad783678ae"
+		},
+		"FabricNewDatabase_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6bfbbc5d-4a72-4fe1-bb8e-5bbf2dd02d7a"
 		},
 		"Lakehouse1_properties_typeProperties_tenant": {
 			"type": "string",
@@ -229,6 +261,58 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/2024_12_03')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Wait1",
+						"type": "Wait",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 10
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FabricDestNewDatabase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('FabricDestNewDatabase_properties_typeProperties_server')]",
+					"database": "[parameters('FabricDestNewDatabase_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "ServicePrincipal",
+					"servicePrincipalId": "[parameters('FabricDestNewDatabase_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "KeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "fabric-service-principal-client-secret-value"
+					},
+					"tenant": "[parameters('FabricDestNewDatabase_properties_typeProperties_tenant')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/sql_cv_sck')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -344,6 +428,43 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FabricDestNewDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Schema": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"Table": {
+						"type": "string",
+						"defaultValue": "test"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().Schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().Table",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FabricDestNewDatabase')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SQLserverOnprem')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -402,6 +523,40 @@
 						},
 						"secretName": "sc-sql-test"
 					}
+				},
+				"connectVia": {
+					"referenceName": "pep-air",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/pep-air')]",
+				"[concat(variables('factoryId'), '/linkedServices/KeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FabricNewDatabase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('FabricNewDatabase_properties_typeProperties_server')]",
+					"database": "[parameters('FabricNewDatabase_properties_typeProperties_database')]",
+					"encrypt": "True",
+					"trustServerCertificate": true,
+					"authenticationType": "ServicePrincipal",
+					"servicePrincipalId": "[parameters('FabricNewDatabase_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "KeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "fabric-service-principal-client-secret-value"
+					},
+					"tenant": "[parameters('FabricNewDatabase_properties_typeProperties_tenant')]"
 				},
 				"connectVia": {
 					"referenceName": "pep-air",
@@ -613,198 +768,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Lakehouse1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SinkLakeFile')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Lakehouse1",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"Fabric_workspace_ID": {
-							"value": "@dataset().Fabric_workspace_ID",
-							"type": "Expression"
-						},
-						"Lakehouse_ID": {
-							"value": "@dataset().Lakehouse_ID",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"FolderPath": {
-						"type": "string"
-					},
-					"FileName": {
-						"type": "string"
-					},
-					"Fabric_workspace_ID": {
-						"type": "string"
-					},
-					"Lakehouse_ID": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "LakehouseLocation",
-						"fileName": {
-							"value": "@dataset().FileName",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().FolderPath",
-							"type": "Expression"
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Lakehouse1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SinkLakeTable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Lakehouse1",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"Fabric_workspace_ID": {
-							"value": "@dataset().Fabric_workspace_ID",
-							"type": "Expression"
-						},
-						"Lakehouse_ID": {
-							"value": "@dataset().Lakehouse_ID",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"SchemaName": {
-						"type": "string",
-						"defaultValue": "dbo"
-					},
-					"TableName": {
-						"type": "string"
-					},
-					"Lakehouse_ID": {
-						"type": "string"
-					},
-					"Fabric_workspace_ID": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "LakehouseTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": {
-						"value": "@dataset().SchemaName",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Lakehouse1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SinkWarehouse')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Warehouse1",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"Fabric_workspace_ID": {
-							"value": "@dataset().Fabric_workspace_ID",
-							"type": "Expression"
-						},
-						"Warehouse_ID": {
-							"value": "@dataset().Warehouse_ID",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"SchemaName": {
-						"type": "string"
-					},
-					"TableName": {
-						"type": "string"
-					},
-					"Fabric_workspace_ID": {
-						"type": "string"
-					},
-					"Warehouse_ID": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "WarehouseTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": {
-						"value": "@dataset().SchemaName",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Warehouse1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SourceSQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DEMO_1DB",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"SchemaName": {
-						"type": "string",
-						"defaultValue": "dbo"
-					},
-					"TableName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": {
-						"value": "@dataset().SchemaName",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DEMO_1DB')]"
 			]
 		}
 	]
