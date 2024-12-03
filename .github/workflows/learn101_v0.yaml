@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Main Branch
         uses: actions/checkout@v2
         with:
-          ref: main
+          ref: adf_publish
 
       - name: Upload Files from Main Branch
         uses: actions/upload-artifact@v3
@@ -50,20 +50,6 @@ jobs:
         with:
           name: main-branch-artifact
           path: ./artifacts/main
-
-      - name: List files in working directory
-        run: ls -R
-
-      - name: Show directory tree
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y tree
-          tree
-          
-      - name: Checkout ADF Publish Branch
-        uses: actions/checkout@v2
-        with:
-          ref: adf_publish
 
       - name: List files in working directory
         run: ls -R
