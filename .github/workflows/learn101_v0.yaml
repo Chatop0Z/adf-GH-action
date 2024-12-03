@@ -95,6 +95,13 @@ jobs:
           secrets: 'dev-sta-key, sc-sql-test'
         id: GetSecrets
 
+      - name: Load Parameters
+        run: |
+          containerUri=$(jq -r '.containerUri' adf-dev-pep/linkedTemplates/ArmTemplate_master.json)
+          containerSasToken=$(jq -r '.containerSasToken' adf-dev-pep/linkedTemplates/ArmTemplate_master.json)
+          echo "CONTAINER_URI=$containerUri" >> $GITHUB_ENV
+          echo "CONTAINER_SAS_TOKEN=$containerSasToken" >> $GITHUB_ENV
+
       - name: 'ARM Template deployment: Resource Group scope'
         uses: azure/arm-deploy@v1
         with:
@@ -116,6 +123,8 @@ jobs:
             default_properties_Lakehouse_ID_value=09042a65-55c7-4dc6-9cf4-05135af4693e
             default_properties_Fabric_workspace_ID_value=e567bfd4-856e-4a32-bed6-4871b59bdce4
             default_properties_Warehouse_ID_value=07061d43-f149-42a8-9757-ac426e93c4dd
+            containerUri=$CONTAINER_URI
+            containerSasToken=$CONTAINER_SAS_TOKEN
 
       - name: Run Azure PowerShell inline script for START TRIGGER
         uses: azure/powershell@v2
