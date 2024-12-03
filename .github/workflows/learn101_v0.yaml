@@ -1,11 +1,11 @@
 name: Upload Files from Branches
-
+ 
 on:
   workflow_dispatch:
   push:
     branches:
       - adf_publish
-
+ 
 jobs:
   upload-artifact-main:
     runs-on: ubuntu-latest
@@ -14,14 +14,14 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: main
-
+ 
       - name: Upload Files from Main Branch
         uses: actions/upload-artifact@v3
         with:
           name: main-branch-artifact
           path: |
             TriggerRestarter.ps1
-
+ 
   # upload-artifact-adf:
   #   runs-on: ubuntu-latest
   #   steps:
@@ -29,7 +29,7 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         ref: adf_publish
-
+ 
   #     - name: Upload Files from ADF Publish Branch
   #       uses: actions/upload-artifact@v3
   #       with:
@@ -37,7 +37,7 @@ jobs:
   #         path: |
   #           adf-dev-pep/ARMTemplateParametersForFactory.json
   #           adf-dev-pep/ARMTemplateForFactory.json
-
+ 
   ARM-Template-Deployment:
     name: Deploying ARM-Template
     runs-on: ubuntu-latest
@@ -49,65 +49,63 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: adf_publish
-    
       - name: Download Files from Main Branch Artifact
         uses: actions/download-artifact@v3
         with:
           name: main-branch-artifact
           path: ./artifacts/main
-
+ 
       - name: List files in working directory
         run: ls -R
-
+ 
       - name: Show directory tree
         run: |
           sudo apt-get update
           sudo apt-get install -y tree
           tree
-
+ 
       # - name: Download Files from ADF Publish Branch Artifact
       #   uses: actions/download-artifact@v3
       #   with:
       #     name: adf-publish-branch-artifact
       #     path: ./artifacts/ARM
-
+ 
       - name: Login via Az module
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true 
-      
       - name: Run Azure PowerShell inline script for STOP TRIGGER
         uses: azure/powershell@v2
         with:
           inlineScript: ./artifacts/main/TriggerRestarter.ps1 
-            -armTemplate adf-dev-pep/ARMTemplateForFactory.json
+            -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json
             -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
             -DataFactoryName ${{ vars.DATAFACTORYNAME }}
             -predeployment $true 
             -deleteDeployment $false
           azPSVersion: "latest"
-
+ 
       - name: Gathering keys from Azure key vault
         uses: Azure/get-keyvault-secrets@v1
         with: 
           keyvault: 'kv-dev-pb'
           secrets: 'dev-sta-key, sc-sql-test'
         id: GetSecrets
-
+ 
       # - name: Load Parameters
       #   run: |
       #     containerUri=$(jq -r '.containerUri' adf-dev-pep/linkedTemplates/ArmTemplate_master.json)
       #     containerSasToken=$(jq -r '.containerSasToken' adf-dev-pep/linkedTemplates/ArmTemplate_master.json)
       #     echo "CONTAINER_URI=$containerUri" >> $GITHUB_ENV
       #     echo "CONTAINER_SAS_TOKEN=$containerSasToken" >> $GITHUB_ENV
-
+ 
       - name: 'ARM Template deployment: Resource Group scope'
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: ${{ vars.RESOURCEGROUPNAME }}
-          template: adf-dev-pep/ARMTemplateForFactory.json
-          parameters: adf-dev-pep/ARMTemplateParametersForFactory.json
+          template: adf-dev-pep/linkedTemplates/ArmTemplate_master.json
+          parameters: adf-dev-pep/linkedTemplates/ArmTemplateParameters_master.json 
             factoryName=${{ vars.DATAFACTORYNAME }}
             sta_accountKey=${{ steps.GetSecrets.outputs.dev-sta-key }}
             KeyVault_properties_typeProperties_baseUrl=https://kv-dev-pb.vault.azure.net/
@@ -123,14 +121,14 @@ jobs:
             default_properties_Lakehouse_ID_value=09042a65-55c7-4dc6-9cf4-05135af4693e
             default_properties_Fabric_workspace_ID_value=e567bfd4-856e-4a32-bed6-4871b59bdce4
             default_properties_Warehouse_ID_value=07061d43-f149-42a8-9757-ac426e93c4dd
-            # containerUri=https://raw.githubusercontent.com/Chatop0Z/adf-GH-action/refs/heads/adf_publish/adf-dev-pep/linkedTemplates
-            # containerSasToken=" "
-
+            containerUri=https://raw.githubusercontent.com/Chatop0Z/adf-GH-action/refs/heads/adf_publish/adf-dev-pep/linkedTemplates
+            containerSasToken=" "
+ 
       - name: Run Azure PowerShell inline script for START TRIGGER
         uses: azure/powershell@v2
         with:
           inlineScript: ./artifacts/main/TriggerRestarter.ps1 
-            -armTemplate adf-dev-pep/ARMTemplateForFactory.json
+            -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json
             -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
             -DataFactoryName ${{ vars.DATAFACTORYNAME }}
             -predeployment $false 
