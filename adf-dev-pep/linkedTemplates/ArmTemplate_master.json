@@ -111,11 +111,11 @@
 		},
 		"containerUri": {
 			"type": "string",
-			"metadata": "URI to storage account containing linked ARM templates"
+			"metadata": "https://fabic.blob.core.windows.net/fabic"
 		},
 		"containerSasToken": {
 			"type": "string",
-			"metadata": "Sas token to storage account containing linked ARM templates"
+			"metadata": "sp=r&st=2024-12-03T06:19:49Z&se=2025-01-11T14:19:49Z&spr=https&sv=2022-11-02&sr=b&sig=jjUq9ctdNY4JhHvCFdb934bPK3CHomRIvJRgiGL93IA%3D"
 		}
 	},
 	"variables": {
