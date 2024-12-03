@@ -1,0 +1,111 @@
+name: Upload Files and Deploy ARM Templates
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - adf_publish
+
+jobs:
+  upload-artifact-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Main Branch
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Upload Files from Main Branch
+        uses: actions/upload-artifact@v3
+        with:
+          name: main-branch-artifact
+          path: TriggerRestarter.ps1
+
+  ARM-Template-Deployment:
+    name: Deploy ARM Templates
+    runs-on: ubuntu-latest
+    needs: [upload-artifact-main]
+    environment:
+      name: TestingEnvForDeployment
+    steps:
+      - name: Checkout ADF Publish Branch
+        uses: actions/checkout@v2
+        with:
+          ref: adf_publish
+    
+      - name: Download Files from Main Branch Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: main-branch-artifact
+          path: ./artifacts/main
+
+      - name: List files in working directory
+        run: ls -R
+
+      - name: Install `tree` for directory visualization
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tree
+          tree
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true 
+
+      - name: Run STOP TRIGGER script
+        uses: azure/powershell@v2
+        with:
+          inlineScript: |
+            ./artifacts/main/TriggerRestarter.ps1 `
+            -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json `
+            -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }} `
+            -DataFactoryName ${{ vars.DATAFACTORYNAME }} `
+            -predeployment $true `
+            -deleteDeployment $false
+          azPSVersion: "latest"
+
+      - name: Retrieve secrets from Azure Key Vault
+        uses: azure/get-keyvault-secrets@v1
+        with:
+          keyvault: 'kv-dev-pb'
+          secrets: 'dev-sta-key,sc-sql-test'
+        id: GetSecrets
+
+      - name: Deploy ARM Template
+        uses: azure/arm-deploy@v1
+        with:
+          resourceGroupName: ${{ vars.RESOURCEGROUPNAME }}
+          template: adf-dev-pep/linkedTemplates/ArmTemplate_master.json
+          parameters: adf-dev-pep/linkedTemplates/ArmTemplateParameters_master.json
+          parametersFile: |
+            factoryName=${{ vars.DATAFACTORYNAME }}
+            sta_accountKey=${{ steps.GetSecrets.outputs.dev-sta-key }}
+            KeyVault_properties_typeProperties_baseUrl=https://kv-dev-pb.vault.azure.net/
+            Warehouse1_properties_typeProperties_endpoint=lw6pw23sjlqu7o4olo7s3ubnpi-2s7wpzloquzevpwwjby3lg644q.datawarehouse.fabric.microsoft.com
+            sql_cv_sck_properties_typeProperties_server=pep-sql-test.database.windows.net
+            sql_cv_sck_properties_typeProperties_database=${{ vars.SQL_DATABASE }}
+            sql_cv_sck_properties_typeProperties_userName=superadmin
+            sta_properties_typeProperties_url=https://stadevpep.dfs.core.windows.net/
+            mpep-sta_properties_privateLinkResourceId=/subscriptions/6a469d78-5b75-453f-80c4-fdef2c1bd871/resourceGroups/rg-GH-Action-CICD/providers/Microsoft.Storage/storageAccounts/stadevpep
+            mpep-sta_properties_groupId=dfs
+            mpep-sta_properties_fqdns="[\"stadevpep.dfs.core.windows.net\"]"
+            default_properties_ENV_value=" "
+            default_properties_Lakehouse_ID_value=09042a65-55c7-4dc6-9cf4-05135af4693e
+            default_properties_Fabric_workspace_ID_value=e567bfd4-856e-4a32-bed6-4871b59bdce4
+            default_properties_Warehouse_ID_value=07061d43-f149-42a8-9757-ac426e93c4dd
+            containerUri=adf-dev-pep/linkedTemplates
+            containerSasToken=" "
+
+      - name: Run START TRIGGER script
+        uses: azure/powershell@v2
+        with:
+          inlineScript: |
+            ./artifacts/main/TriggerRestarter.ps1 `
+            -armTemplate adf-dev-pep/linkedTemplates/ArmTemplate_master.json `
+            -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }} `
+            -DataFactoryName ${{ vars.DATAFACTORYNAME }} `
+            -predeployment $false `
+            -deleteDeployment $true
+          azPSVersion: "latest"
