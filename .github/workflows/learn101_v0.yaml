@@ -22,29 +22,26 @@ jobs:
           path: |
             TriggerRestarter.ps1
 
-  upload-artifact-adf:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout ADF Publish Branch
-        uses: actions/checkout@v2
-        with:
-          ref: adf_publish
+  # upload-artifact-adf:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout ADF Publish Branch
+  #       uses: actions/checkout@v2
+  #       with:
+  #         ref: adf_publish
 
-      - name: Print
-        run: ls
-
-      - name: Upload Files from ADF Publish Branch
-        uses: actions/upload-artifact@v3
-        with:
-          name: adf-publish-branch-artifact
-          path: |
-            adf-dev-pep/ARMTemplateParametersForFactory.json
-            adf-dev-pep/ARMTemplateForFactory.json
+  #     - name: Upload Files from ADF Publish Branch
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: adf-publish-branch-artifact
+  #         path: |
+  #           adf-dev-pep/ARMTemplateParametersForFactory.json
+  #           adf-dev-pep/ARMTemplateForFactory.json
 
   ARM-Template-Deployment:
     name: Deploying ARM-Template
     runs-on: ubuntu-latest
-    needs: [upload-artifact-main, upload-artifact-adf]
+    needs: [upload-artifact-main] #[upload-artifact-main, upload-artifact-adf]
     environment:
       name: TestingEnvForDeployment
     steps:
@@ -53,12 +50,17 @@ jobs:
         with:
           name: main-branch-artifact
           path: ./artifacts/main
-
-      - name: Download Files from ADF Publish Branch Artifact
-        uses: actions/download-artifact@v3
+          
+      - name: Checkout ADF Publish Branch
+        uses: actions/checkout@v2
         with:
-          name: adf-publish-branch-artifact
-          path: ./artifacts/ARM
+          ref: adf_publish
+
+      # - name: Download Files from ADF Publish Branch Artifact
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: adf-publish-branch-artifact
+      #     path: ./artifacts/ARM
 
       - name: Login via Az module
         uses: azure/login@v2
@@ -70,7 +72,7 @@ jobs:
         uses: azure/powershell@v2
         with:
           inlineScript: ./artifacts/main/TriggerRestarter.ps1 
-            -armTemplate ./artifacts/ARM/ARMTemplateForFactory.json 
+            -armTemplate adf-dev-pep/linkedTemplates/ARM/ArmTemplate_master.json 
             -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
             -DataFactoryName ${{ vars.DATAFACTORYNAME }}
             -predeployment $true 
@@ -88,7 +90,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: ${{ vars.RESOURCEGROUPNAME }}
-          template: ./artifacts/ARM/ARMTemplateForFactory.json
+          template: adf-dev-pep/linkedTemplates/ARM/ArmTemplate_master.json 
           parameters: ./artifacts/ARM/ARMTemplateParametersForFactory.json 
             factoryName=${{ vars.DATAFACTORYNAME }}
             sta_accountKey=${{ steps.GetSecrets.outputs.dev-sta-key }}
@@ -110,7 +112,7 @@ jobs:
         uses: azure/powershell@v2
         with:
           inlineScript: ./artifacts/main/TriggerRestarter.ps1 
-            -armTemplate ./artifacts/ARM/ARMTemplateForFactory.json 
+            -armTemplate adf-dev-pep/linkedTemplates/ARM/ArmTemplate_master.json 
             -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
             -DataFactoryName ${{ vars.DATAFACTORYNAME }}
             -predeployment $false 
