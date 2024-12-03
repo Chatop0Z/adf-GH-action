@@ -90,7 +90,7 @@ jobs:
         uses: azure/powershell@v2
         with:
           inlineScript: ./artifacts/main/TriggerRestarter.ps1 
-            -armTemplate adf-dev-pep/linkedTemplates/ARM/ArmTemplate_master.json 
+            -armTemplate ArmTemplateParameters_master.json
             -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
             -DataFactoryName ${{ vars.DATAFACTORYNAME }}
             -predeployment $true 
@@ -108,7 +108,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: ${{ vars.RESOURCEGROUPNAME }}
-          template: adf-dev-pep/linkedTemplates/ARM/ArmTemplate_master.json 
+          template: ArmTemplateParameters_master.json
           parameters: ./artifacts/ARM/ARMTemplateParametersForFactory.json 
             factoryName=${{ vars.DATAFACTORYNAME }}
             sta_accountKey=${{ steps.GetSecrets.outputs.dev-sta-key }}
@@ -130,7 +130,7 @@ jobs:
         uses: azure/powershell@v2
         with:
           inlineScript: ./artifacts/main/TriggerRestarter.ps1 
-            -armTemplate adf-dev-pep/linkedTemplates/ARM/ArmTemplate_master.json 
+            -armTemplate ArmTemplateParameters_master.json
             -ResourceGroupName ${{ vars.RESOURCEGROUPNAME }}
             -DataFactoryName ${{ vars.DATAFACTORYNAME }}
             -predeployment $false 
