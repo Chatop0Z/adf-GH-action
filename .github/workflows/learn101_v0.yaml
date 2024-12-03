@@ -100,7 +100,7 @@ jobs:
         with:
           resourceGroupName: ${{ vars.RESOURCEGROUPNAME }}
           template: adf-dev-pep/linkedTemplates/ArmTemplate_master.json
-          parameters: ./artifacts/ARM/ARMTemplateParametersForFactory.json 
+          parameters: adf-dev-pep/linkedTemplates/ArmTemplateParameters_master.json 
             factoryName=${{ vars.DATAFACTORYNAME }}
             sta_accountKey=${{ steps.GetSecrets.outputs.dev-sta-key }}
             KeyVault_properties_typeProperties_baseUrl=https://kv-dev-pb.vault.azure.net/
